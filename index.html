@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>NEÓN NIGHT PARTY | Experiencia Todo Acceso</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="js/tailwind-config.js"></script>
+    <link href="css/style.css" rel="stylesheet" />
+</head>
+
+<body class="bg-brand-black text-white selection:bg-neon-lime selection:text-black moving-gradient-bg">
+    <div class="layout-container flex h-full grow flex-col relative overflow-x-hidden min-h-screen">
+        <div class="fixed inset-0 noise-overlay pointer-events-none z-[60]"></div>
+
+        <!-- Header Minimalista -->
+        <header
+            class="flex items-center justify-between whitespace-nowrap px-6 lg:px-10 py-6 absolute top-0 w-full z-50">
+            <div class="flex items-center gap-6">
+                <img src="assets/DIFERENTE.png" alt="Diferente" class="header-logo">
+            </div>
+            <div class="flex flex-1 justify-end gap-6 items-center">
+                <a href="#tickets"
+                    class="group relative inline-flex items-center gap-2 px-8 py-2 bg-neon-lime text-black font-black uppercase tracking-wider text-sm hover:bg-neon-lime/80 transition-all transform skew-x-[-10deg]">
+                    <span class="relative z-10 skew-x-[10deg]">Tickets</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="flex-grow flex flex-col items-center justify-center py-24 relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute inset-0 z-0 overflow-hidden">
+                <div
+                    class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-neon-lime/10 rounded-full blur-[120px] animate-pulse-slow mix-blend-screen">
+                </div>
+                <div class="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-neon-yellow/10 rounded-full blur-[120px] animate-pulse-slow mix-blend-screen"
+                    style="animation-delay: 2s;"></div>
+            </div>
+
+            <section
+                class="relative z-10 w-full max-w-6xl mx-auto px-6 flex flex-col items-center text-center space-y-16">
+
+                <!-- Main Title / Logo Area -->
+                <div class="relative transform hover:scale-105 transition-transform duration-700 ease-out py-12">
+                    <div
+                        class="neon-oval-logo w-[280px] h-[140px] sm:w-[450px] sm:h-[230px] md:w-[500px] md:h-[250px] relative z-20 bg-black/40 backdrop-blur-sm border-[6px] sm:border-[8px] border-white animate-flicker-white shadow-[0_0_50px_rgba(255,255,255,0.3)]">
+                        <h1
+                            class="font-display text-[80px] sm:text-[150px] md:text-[170px] leading-none text-white italic tracking-tighter drop-shadow-[0_0_20px_rgba(255,255,255,0.6)] skew-x-[-10deg] translate-y-2">
+                            NEON
+                        </h1>
+                    </div>
+                    <div class="absolute -bottom-10 sm:-bottom-12 left-1/2 -translate-x-1/2 w-full z-30 rotate-[-8deg]">
+                        <h2
+                            class="font-script text-[50px] sm:text-[85px] md:text-[100px] text-neon-yellow drop-shadow-[0_0_15px_rgba(255,255,0,0.8)] whitespace-nowrap">
+                            Night Party
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- Event Details Grid -->
+                <!-- Contenedor Flex para mejor control de espacio y evitar desbordamientos -->
+                <div
+                    class="flex flex-col md:flex-row items-center justify-center w-full max-w-5xl mt-16 p-8 relative gap-12 lg:gap-24">
+                    <!-- Date Section -->
+                    <div
+                        class="flex-1 flex flex-col items-start border-l-8 border-neon-lime pl-6 lg:pl-8 min-w-[200px]">
+                        <span
+                            class="text-[60px] lg:text-[90px] leading-[0.8] font-display font-black text-white block drop-shadow-md">5</span>
+                        <div class="flex flex-col items-start">
+                            <span
+                                class="text-2xl lg:text-4xl font-black uppercase text-white tracking-tighter italic whitespace-nowrap">Febrero</span>
+                            <span
+                                class="text-2xl lg:text-4xl font-black text-neon-lime tracking-tighter shadow-black drop-shadow-md">2026</span>
+                        </div>
+                    </div>
+
+                    <!-- Location Section -->
+                    <div
+                        class="flex-1 flex flex-col justify-center border-l-8 border-neon-yellow pl-6 lg:pl-8 min-w-[250px]">
+                        <h3
+                            class="text-3xl lg:text-5xl font-display font-black text-neon-yellow italic uppercase drop-shadow-[0_0_10px_rgba(255,255,0,0.4)] leading-none text-left">
+                            Tlaloc Club
+                        </h3>
+                        <div class="space-y-2 text-left mt-2">
+                            <span
+                                class="text-white font-bold tracking-widest text-xs lg:text-base uppercase bg-white/10 px-2 py-1 inline-block whitespace-nowrap">
+                                Blvd. Marcelino Garcia 1881
+                            </span>
+                            <p class="text-white font-black tracking-tighter text-2xl lg:text-3xl block">15:00 HRS</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing -->
+                <div class="w-full max-w-3xl py-10 relative" id="tickets">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-[-20deg]">
+                    </div>
+                    <h3
+                        class="font-display text-4xl sm:text-5xl font-black text-white italic uppercase mb-4 relative z-10 text-halo">
+                        Tickets</h3>
+                    <p class="text-2xl sm:text-3xl font-black text-neon-lime italic relative z-10">
+                        <span class="text-whitetext-halo">$25 PRE</span>
+                        <span class="text-white mx-3 font-thin">/</span>
+                        <span class="text-whitetext-halo">$50 DIA DEL EVENTO</span>
+                    </p>
+                    <div class="mt-10 relative z-10">
+                        <a href="registro.html" class="btn-primary">
+                            <span>Comprar Ahora</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+
+        <footer class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo-group">
+                    <div class="footer-logo-item">
+                        <img src="assets/GD WY.png" alt="Grupo Divtic" class="footer-logo-img">
+                    </div>
+                    <div class="footer-logo-item">
+                        <img src="assets/GI WY.png" alt="Grupo Ingenierias" class="footer-logo-img">
+                    </div>
+                    <div class="footer-logo-item">
+                        <img src="assets/GB WY.png" alt="Grupo Basicas" class="footer-logo-img">
+                    </div>
+                </div>
+                <div class="footer-copyright">
+                    © 2026 Neon Night Party
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

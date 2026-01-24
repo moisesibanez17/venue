@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Panel de Administración | Neón Night Party</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="js/tailwind-config.js"></script>
+    <link href="css/style.css" rel="stylesheet" />
+    <!-- QR Scanner Library -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+</head>
+
+<body class="bg-midnight text-white selection:bg-neon-pink selection:text-white moving-gradient-bg min-h-screen">
+    <div class="fixed inset-0 noise-overlay pointer-events-none z-[60]"></div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="relative z-10 min-h-screen flex items-center justify-center p-4">
+        <div class="max-w-md w-full">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-black uppercase font-display italic tracking-tighter mb-2 neon-flicker-cyan">
+                    Admin Panel</h1>
+                <p class="text-sm text-slate-300">Ingresa tus credenciales</p>
+            </div>
+
+            <div class="ticket-border-glow bg-midnight/90 backdrop-blur-xl p-8 rounded-lg border border-white/10">
+                <form id="login-form" class="space-y-6">
+                    <div>
+                        <label class="text-[10px] font-black uppercase tracking-wide text-neon-cyan">Usuario</label>
+                        <input id="login-username" type="text" required
+                            class="w-full bg-midnight/50 border-2 border-white/10 p-3 text-white font-bold mt-2 focus:ring-0 focus:outline-none neon-input transition-all">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black uppercase tracking-wide text-neon-cyan">Contraseña</label>
+                        <input id="login-password" type="password" required
+                            class="w-full bg-midnight/50 border-2 border-white/10 p-3 text-white font-bold mt-2 focus:ring-0 focus:outline-none neon-input transition-all">
+                    </div>
+                    <div id="login-error" class="hidden p-3 bg-neon-pink/10 border border-neon-pink/30">
+                        <p class="text-xs text-neon-pink uppercase"></p>
+                    </div>
+                    <button type="submit"
+                        class="w-full h-12 bg-neon-cyan text-midnight font-black uppercase tracking-widest shadow-[0_0_30px_rgba(0,255,255,0.4)] hover:shadow-[0_0_50px_rgba(0,255,255,0.6)] transition-all">
+                        Iniciar Sesión
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (hidden until logged in) -->
+    <div id="admin-dashboard" class="hidden relative z-10">
+        <!-- Header -->
+        <div class="bg-midnight/90 border-b border-white/10 backdrop-blur-xl p-4">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <h1 class="text-xl font-black uppercase font-display italic tracking-tight neon-flicker-pink">
+                    Admin Dashboard</h1>
+                <div class="flex items-center gap-4">
+                    <span id="admin-username" class="text-sm text-slate-400"></span>
+                    <button id="logout-btn"
+                        class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-black uppercase tracking-wide transition-all">
+                        Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="bg-midnight/80 border-b border-white/10">
+            <div class="max-w-7xl mx-auto flex gap-1 p-1">
+                <button data-tab="scanner"
+                    class="tab-btn flex-1 py-3 px-4 text-xs font-black uppercase tracking-wide transition-all">
+                    QR Scanner
+                </button>
+                <button data-tab="free-tickets"
+                    class="tab-btn flex-1 py-3 px-4 text-xs font-black uppercase tracking-wide transition-all">
+                    Boletos Gratis
+                </button>
+                <button data-tab="discounts"
+                    class="tab-btn flex-1 py-3 px-4 text-xs font-black uppercase tracking-wide transition-all">
+                    Códigos de Descuento
+                </button>
+                <button data-tab="reminders"
+                    class="tab-btn flex-1 py-3 px-4 text-xs font-black uppercase tracking-wide transition-all">
+                    Recordatorios
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="max-w-7xl mx-auto p-4">
+            <!-- Scanner Tab -->
+            <div id="scanner-tab" class="tab-content">
+                <div class="max-w-2xl mx-auto">
+                    <div
+                        class="ticket-border-glow bg-midnight/90 backdrop-blur-xl p-6 rounded-lg border border-white/10 mb-6">
+                        <div id="reader" class="w-full mb-6"></div>
+                        <div class="flex gap-4">
+                            <button id="start-scan-btn"
+                                class="flex-1 h-12 bg-neon-cyan text-midnight font-black text-sm uppercase tracking-widest shadow-[0_0_30px_rgba(0,255,255,0.4)] hover:shadow-[0_0_50px_rgba(0,255,255,0.6)] transition-all">
+                                Iniciar Scanner
+                            </button>
+                            <button id="stop-scan-btn" disabled
+                                class="flex-1 h-12 bg-white/10 text-white font-black text-sm uppercase tracking-widest disabled:opacity-50">
+                                Detener Scanner
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="result-container"
+                        class="hidden ticket-border-glow bg-midnight/90 backdrop-blur-xl p-6 rounded-lg border border-white/10">
+                        <div id="result-content"></div>
+                        <button id="scan-another-btn"
+                            class="w-full mt-6 h-12 bg-neon-lime text-midnight font-black text-sm uppercase tracking-widest shadow-[0_0_30px_rgba(190,255,0,0.4)] hover:shadow-[0_0_50px_rgba(190,255,0,0.6)] transition-all">
+                            Escanear Otro
+                        </button>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-3 gap-4">
+                        <div class="bg-white/5 p-4 border border-white/10 text-center">
+                            <div id="valid-count" class="text-3xl font-black text-neon-cyan">0</div>
+                            <div class="text-xs text-slate-500 uppercase tracking-widest mt-1">Válidos</div>
+                        </div>
+                        <div class="bg-white/5 p-4 border border-white/10 text-center">
+                            <div id="invalid-count" class="text-3xl font-black text-neon-pink">0</div>
+                            <div class="text-xs text-slate-500 uppercase tracking-widest mt-1">Inválidos</div>
+                        </div>
+                        <div class="bg-white/5 p-4 border border-white/10 text-center">
+                            <div id="total-count" class="text-3xl font-black text-white">0</div>
+                            <div class="text-xs text-slate-500 uppercase tracking-widest mt-1">Total</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Free Tickets Tab -->
+            <div id="free-tickets-tab" class="tab-content hidden">
+                <div class="max-w-2xl mx-auto">
+                    <div
+                        class="ticket-border-glow bg-midnight/90 backdrop-blur-xl p-8 rounded-lg border border-white/10">
+                        <h2 class="text-xl font-black uppercase mb-6 text-neon-lime">Generar Boletos Gratis</h2>
+                        <form id="free-ticket-form" class="space-y-4">
+                            <div>
+                                <label class="text-[10px] font-black uppercase tracking-wide text-neon-cyan">Nombre
+                                    Completo</label>
+                                <input id="free-name" type="text" required
+                                    class="w-full bg-midnight/50 border-2 border-white/10 p-3 text-white font-bold uppercase mt-2 focus:ring-0 focus:outline-none neon-input transition-all">
+                            </div>
+                            <div>
+                                <label
+                                    class="text-[10px] font-black uppercase tracking-wide text-neon-cyan">Email</label>
+                                <input id="free-email" type="email" required
+                                    class="w-full bg-midnight/50 border-2 border-white/10 p-3 text-white mt-2 focus:ring-0 focus:outline-none neon-input transition-all">
+                            </div>
+                            <div>
+                                <label
+                                    class="text-[10px] font-black uppercase tracking-wide text-neon-cyan">Teléfono</label>
+                                <input id="free-phone" type="tel"
+                                    class="w-full bg-midnight/50 border-2 border-white/10 p-3 text-white mt-2 focus:ring-0 focus:outline-none neon-input transition-all">
+                            </div>
+                            <div>
+                                <label
+                                    class="text-[10px] font-black uppercase tracking-wide text-neon-cyan">Cantidad</label>
+                                <select id="free-quantity"
+                                    class="w-full bg-midnight/50 border-2 border-white/10 p-3 text-white font-bold uppercase mt-2 focus:ring-0 focus:outline-none neon-input transition-all">
+                                    <option value="1">1 Boleto</option>
+                                    <option value="2">2 Boletos</option>
+                                    <option value="3">3 Boletos</option>
+                                    <option value="4">4 Boletos</option>
+                                    <option value="5">5 Boletos</option>
+                                </select>
+                            </div>
+                            <button type="submit"
+                                class="w-full h-12 bg-neon-lime text-midnight font-black uppercase tracking-widest shadow-[0_0_30px_rgba(190,255,0,0.4)] hover:shadow-[0_0_50px_rgba(190,255,0,0.6)] transition-all">
+                                Generar Boleto Gratis
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Generated Ticket Display -->
+                    <div id="generated-ticket"
+                        class="hidden mt-6 ticket-border-glow bg-midnight/90 backdrop-blur-xl p-8 rounded-lg border border-white/10 text-center">
+                        <h3 class="text-lg font-black uppercase mb-4 text-neon-lime">✓ Boleto Generado</h3>
+                        <img id="generated-qr" class="mx-auto mb-4" style="max-width: 300px;">
+                        <p id="generated-info" class="text-sm text-slate-300 mb-4"></p>
+                        <button id="download-qr"
+                            class="px-6 py-3 bg-neon-cyan text-midnight font-black uppercase text-xs tracking-wide">
+                            Descargar QR
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discounts Tab -->
+            <div id="discounts-tab" class="tab-content hidden">
+                <div class="max-w-4xl mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Create Discount Form -->
+                        <div
+                            class="ticket-border-glow bg-midnight/90 backdrop-blur-xl p-8 rounded-lg border border-white/10">
+                            <h2 class="text-xl font-black uppercase mb-6 text-neon-pink">Crear Código de Descuento</h2>
+                            <form id="discount-form" class="space-y-4">
+                                <div>
+                                    <label
+                                        class="text-[10px] font-black uppercase tracking-wide text-neon-cyan">Código</label>
+                                    <input id="discount-code-input" type="text" required
+                                        class="w-full bg-midnight/50 border-2 border-white/10 p-3 text-white font-bold uppercase mt-2 focus:ring-0 focus:outline-none neon-input transition-all"
+                                        placeholder="PROMO20">
+                                </div>
+                                <div>
+                                    <label
+                                        class="text-[10px] font-black uppercase tracking-wide text-neon-cyan">Tipo</label>
+                                    <select id="discount-type"
+                                        class="w-full bg-midnight/50 border-2 border-white/10 p-3 text-white font-bold uppercase mt-2 focus:ring-0 focus:outline-none neon-input transition-all">
+                                        <option value="percentage">Porcentaje (%)</option>
+                                        <option value="fixed">Cantidad Fija ($)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        class="text-[10px] font-black uppercase tracking-wide text-neon-cyan">Valor</label>
+                                    <input id="discount-value" type="number" step="0.01" required
+                                        class="w-full bg-midnight/50 border-2 border-white/10 p-3 text-white font-bold uppercase mt-2 focus:ring-0 focus:outline-none neon-input transition-all"
+                                        placeholder="10">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-black uppercase tracking-wide text-neon-cyan">Usos
+                                        Máximos (opcional)</label>
+                                    <input id="discount-max-uses" type="number" step="1"
+                                        class="w-full bg-midnight/50 border-2 border-white/10 p-3 text-white font-bold uppercase mt-2 focus:ring-0 focus:outline-none neon-input transition-all"
+                                        placeholder="Ilimitado">
+                                </div>
+                                <button type="submit"
+                                    class="w-full h-12 bg-neon-pink text-white font-black uppercase tracking-widest shadow-[0_0_30px_rgba(255,0,255,0.4)] hover:shadow-[0_0_50px_rgba(255,0,255,0.6)] transition-all">
+                                    Crear Código
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Discount Codes List -->
+                        <div
+                            class="ticket-border-glow bg-midnight/90 backdrop-blur-xl p-8 rounded-lg border border-white/10">
+                            <h2 class="text-xl font-black uppercase mb-6 text-white">Códigos Existentes</h2>
+                            <div id="discounts-list" class="space-y-3 max-h-[600px] overflow-y-auto">
+                                <!-- Discount codes will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reminders Tab -->
+            <div id="reminders-tab" class="tab-content hidden">
+                <div class="max-w-2xl mx-auto">
+                    <div
+                        class="ticket-border-glow bg-midnight/90 backdrop-blur-xl p-8 rounded-lg border border-white/10">
+                        <h2 class="text-2xl font-black uppercase mb-6 text-neon-lime">📱 Recordatorios de Evento</h2>
+
+                        <div class="space-y-4 mb-6">
+                            <p class="text-slate-400 text-sm">
+                                Envía un recordatorio a todos los asistentes confirmados sobre el evento próximo.
+                            </p>
+
+                            <div class="bg-neon-pink/10 border border-neon-pink/30 p-4">
+                                <p class="text-neon-pink text-xs font-bold uppercase mb-2">⚠️ Información</p>
+                                <ul class="text-slate-400 text-sm space-y-1 list-disc list-inside">
+                                    <li>Solo se enviarán a boletos con pago confirmado</li>
+                                    <li>El email incluye detalles del evento y recordatorios</li>
+                                    <li>Este proceso puede tardar varios minutos</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <button id="send-reminders-btn"
+                            class="w-full h-14 bg-neon-lime text-midnight font-black text-sm uppercase tracking-widest shadow-[0_0_30px_rgba(190,255,0,0.4)] hover:shadow-[0_0_50px_rgba(190,255,0,0.6)] transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                            Enviar Recordatorios
+                        </button>
+
+                        <div id="reminder-result" class="hidden mt-6 p-4 border-2">
+                            <p id="reminder-message" class="font-bold"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

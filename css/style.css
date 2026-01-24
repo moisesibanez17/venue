@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Yellowtail&family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+/* Base */
+.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+}
+
+body {
+    font-family: "Roboto Condensed", sans-serif;
+    background-color: #000000;
+}
+
+/* Animations */
+.neon-flicker-lime {
+    animation: flicker 4s infinite;
+}
+
+.neon-flicker-white {
+    animation: flicker 5s infinite reverse;
+}
+
+.moving-gradient-bg {
+    background: linear-gradient(-45deg, #000000, #0a1a0a, #000000, #050a05);
+    background-size: 400% 400%;
+    animation: gradient-move 15s ease infinite;
+    position: relative;
+}
+
+.moving-gradient-bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, #ccff00 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Effects */
+.aura-glow {
+    box-shadow: 0 0 60px 10px rgba(255, 0, 255, 0.15);
+}
+
+.noise-overlay {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAlS0WpDMyxOplEdy-aYpFVd85Qn7Fj1SiNOaPQia1xv3N1v9CyGJ7XHYIDMWr72z3_NsCowdN8GtDi1Ah-NwTkXG1rtJH6wPdipCZ2VxjatgJ44JEy6mNIdLyLudCq1kg87zQxGw-kxeVF01Wirr968BgKba9j_P5KXE2--SOZBDB-m-KnudiIKq1bMfetyS_xaLfDyb6PONkywhKs5OdQ2GGs8Pr-FX_dTu-JOrnLsxK09MfJkLyM2fgNXzkECvhtyomrRGjvqmk);
+    opacity: 0.05
+}
+
+/* Neon Components */
+/* Neon Components */
+.neon-oval-logo {
+    border: 8px solid white;
+    border-radius: 50%;
+    /* Oval shape will come from width/height ratio */
+    background: transparent;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.5);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(-5deg);
+}
+
+.neon-line-flow {
+    position: absolute;
+    background: linear-gradient(90deg, transparent, #ccff00, transparent);
+    height: 2px;
+    width: 100%;
+    animation: flow 3s linear infinite;
+}
+
+.ticket-border-glow {
+    position: relative;
+}
+
+.ticket-border-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(90deg, #ccff00, #ffff00, #ccff00);
+    background-size: 200%;
+    z-index: -1;
+    animation: gradient-move 3s linear infinite;
+    filter: blur(8px);
+    opacity: 0.8;
+}
+
+/* Logos & Inputs */
+.text-halo {
+    -webkit-text-stroke: 1px black;
+    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.5);
+}
+
+.neon-input:focus {
+    box-shadow: 0 0 15px rgba(204, 255, 0, 0.3);
+    border-color: #ccff00 !important;
+}
+
+/* Component Classes - Reusable Patterns */
+
+/* Header */
+.header-logo {
+    @apply h-10 md:h-14 w-auto;
+    filter: drop-shadow(0 0 20px rgba(204, 255, 0, 0.4));
+    transition: filter 0.3s ease;
+}
+
+.header-logo:hover {
+    filter: drop-shadow(0 0 30px rgba(204, 255, 0, 0.6));
+}
+
+/* Footer */
+.footer-container {
+    @apply py-24 relative z-10 bg-black border-t-2 border-neon-lime/30;
+}
+
+.footer-content {
+    @apply flex flex-col items-center justify-center gap-16 max-w-6xl mx-auto px-6;
+}
+
+.footer-logo-group {
+    @apply flex flex-wrap justify-center items-center gap-12 md:gap-20;
+}
+
+.footer-logo-item {
+    @apply group cursor-pointer transform hover:scale-110 transition-all duration-300;
+}
+
+.footer-logo-img {
+    @apply h-20 md:h-28 w-auto opacity-95 group-hover:opacity-100;
+    filter: drop-shadow(0 0 15px rgba(204, 255, 0, 0.3));
+}
+
+.footer-logo-img:hover {
+    filter: drop-shadow(0 0 25px rgba(204, 255, 0, 0.5));
+}
+
+.footer-copyright {
+    @apply text-center mt-8 text-white/30 text-[10px] tracking-[0.5em] font-bold uppercase;
+}
+
+/* Buttons */
+.btn-primary {
+    @apply inline-block px-12 py-4 bg-neon-lime text-black font-black uppercase text-xl tracking-widest;
+    @apply hover:bg-white hover:scale-105 transition-all transform skew-x-[-10deg];
+    box-shadow: 0 0 30px rgba(204, 255, 0, 0.4);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.6);
+}
+
+.btn-primary span {
+    @apply inline-block skew-x-[10deg];
+}
+
+/* Form Inputs */
+.form-input {
+    @apply w-full bg-black/50 border-2 border-white/10 p-4 text-white font-bold uppercase tracking-widest;
+    @apply focus:ring-0 focus:outline-none neon-input transition-all placeholder:text-white/20;
+}
+
+.form-label {
+    @apply text-[10px] font-black uppercase tracking-[0.3em] text-neon-lime ml-1;
+}
+
+/* Section Headers */
+.section-title {
+    @apply font-display text-4xl sm:text-5xl font-black text-white italic uppercase mb-4 relative z-10 text-halo;
+}
+
+.section-subtitle {
+    @apply text-slate-400 font-light text-lg;
+}

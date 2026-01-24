@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Ver Mi Ticket | Neón Night Party</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="js/tailwind-config.js"></script>
+    <link href="css/style.css" rel="stylesheet" />
+</head>
+
+<body
+    class="bg-midnight text-white selection:bg-neon-pink selection:text-white moving-gradient-bg min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+    <div class="fixed inset-0 noise-overlay pointer-events-none z-[60]"></div>
+
+    <div class="relative z-10 max-w-md w-full p-6">
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-black uppercase font-display italic tracking-tighter mb-4 neon-flicker-cyan">
+                Ver Mi Ticket</h1>
+            <p class="text-slate-300">Ingresa tu correo para recuperar tu boleto digital.</p>
+        </div>
+
+        <div
+            class="ticket-border-glow bg-midnight/90 backdrop-blur-xl p-8 rounded-lg border border-white/10 relative overflow-hidden">
+            <div class="neon-line-flow top-0 opacity-40"></div>
+
+            <div id="search-form" class="space-y-6">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-[0.3em] text-neon-cyan ml-1">Correo
+                        Electrónico</label>
+                    <input id="email-input"
+                        class="w-full bg-midnight/50 border-2 border-white/10 p-4 text-white font-bold tracking-wider focus:ring-0 focus:outline-none neon-input transition-all placeholder:text-white/20"
+                        placeholder="tu@email.com" type="email" />
+                </div>
+
+                <button id="search-btn"
+                    class="relative w-full h-12 bg-neon-cyan text-midnight font-black text-sm uppercase tracking-[0.2em] shadow-[0_0_30px_rgba(0,255,255,0.4)] hover:shadow-[0_0_50px_rgba(0,255,255,0.6)] hover:scale-[1.02] active:scale-[0.98] transition-all">
+                    Buscar Ticket
+                </button>
+
+                <p id="error-msg" class="text-neon-pink text-xs font-bold text-center hidden"></p>
+            </div>
+
+            <div id="ticket-content" class="hidden space-y-6 text-center">
+                <div class="bg-white p-4 rounded-lg inline-block mx-auto shadow-[0_0_30px_rgba(0,255,255,0.3)]">
+                    <img id="qr-image" src="" alt="Código QR de Acceso" class="w-48 h-48 object-contain" />
+                </div>
+
+                <div class="space-y-2">
+                    <h2 id="user-name" class="text-xl font-black uppercase tracking-widest text-white"></h2>
+                    <p class="text-xs text-slate-500 uppercase tracking-[0.2em]">ID de Boleto: <span id="ticket-id"
+                            class="text-neon-cyan"></span></p>
+                </div>
+
+                <div class="pt-6 border-t border-white/10">
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest leading-relaxed">
+                        Presenta este código QR en la entrada del Ciberdomo.
+                        <br />NO LO COMPARTAS. Es válido para un solo acceso.
+                    </p>
+                </div>
+
+                <button id="back-btn"
+                    class="w-full h-10 bg-white/10 text-white font-bold text-xs uppercase tracking-widest hover:bg-white/20 transition-all">
+                    Buscar Otro
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center">
+            <a href="index.html"
+                class="text-xs font-bold uppercase tracking-widest text-neon-lime hover:text-white transition-colors flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                Volver al Inicio
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const searchForm = document.getElementById('search-form');
+        const ticketContent = document.getElementById('ticket-content');
+        const errorMsg = document.getElementById('error-msg');
+
+        document.getElementById('search-btn').addEventListener('click', async () => {
+            const email = document.getElementById('email-input').value.trim();
+
+            if (!email) {
+                showError('Por favor ingresa tu correo electrónico');
+                return;
+            }
+
+            const btn = document.getElementById('search-btn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Buscando...';
+            btn.disabled = true;
+            errorMsg.classList.add('hidden');
+
+            try {
+                // Buscar ticket por email
+                const response = await fetch(`/api/ticket-by-email/${encodeURIComponent(email)}`);
+
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        throw new Error('No se encontró ningún ticket con ese correo');
+                    }
+                    throw new Error('Error buscando ticket');
+                }
+
+                const data = await response.json();
+
+                // Mostrar ticket
+                document.getElementById('qr-image').src = data.qr_code;
+                document.getElementById('user-name').textContent = data.full_name;
+                document.getElementById('ticket-id').textContent = data.ticket_token.slice(0, 8) + '...';
+
+                searchForm.classList.add('hidden');
+                ticketContent.classList.remove('hidden');
+
+            } catch (error) {
+                showError(error.message);
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        });
+
+        document.getElementById('back-btn').addEventListener('click', () => {
+            searchForm.classList.remove('hidden');
+            ticketContent.classList.add('hidden');
+            document.getElementById('email-input').value = '';
+        });
+
+        function showError(message) {
+            errorMsg.textContent = message;
+            errorMsg.classList.remove('hidden');
+        }
+    </script>
+</body>
+
+</html>

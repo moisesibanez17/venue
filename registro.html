@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>NEÓN NIGHT PARTY | Registro de Asistentes</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="js/tailwind-config.js"></script>
+    <!-- Mercado Pago SDK -->
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <link href="css/style.css" rel="stylesheet" />
+    <script src="js/registro.js?v=3" defer></script>
+</head>
+
+<body class="bg-brand-black text-white selection:bg-neon-lime selection:text-black moving-gradient-bg min-h-screen">
+    <div class="layout-container flex h-full grow flex-col relative overflow-x-hidden">
+        <div class="fixed inset-0 noise-overlay pointer-events-none z-[60]"></div>
+
+        <header
+            class="flex items-center justify-between whitespace-nowrap px-6 lg:px-10 py-6 absolute top-0 w-full z-50">
+            <div class="flex items-center gap-2">
+                <a href="index.html"
+                    class="bg-white text-black font-black px-3 py-1 text-sm tracking-widest uppercase transform -skew-x-12 hover:bg-neon-lime transition-colors">VOLVER</a>
+            </div>
+            <div class="flex flex-1 justify-end items-center">
+                <div
+                    class="hidden sm:flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                    <span class="material-symbols-outlined text-neon-lime text-sm">lock</span>
+                    Pago Seguro
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow pt-24">
+            <section class="max-w-[1200px] mx-auto px-6 lg:px-10 pt-12 pb-8">
+                <div class="flex items-center justify-between relative">
+                    <div class="flex flex-col items-center gap-3 relative z-10">
+                        <div
+                            class="size-10 bg-neon-lime text-black rounded-none flex items-center justify-center font-black shadow-[0_0_20px_rgba(204,255,0,0.4)] skew-x-[-10deg]">
+                            <span class="skew-x-[10deg]">1</span>
+                        </div>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-neon-lime">Info
+                            Personal</span>
+                    </div>
+                    <div class="h-px bg-white/10 flex-grow mx-4 translate-y-[-1.25rem] relative">
+                        <div class="absolute inset-0 bg-gradient-to-r from-neon-lime to-white/10 w-1/2"></div>
+                    </div>
+                    <div class="flex flex-col items-center gap-3 relative z-10 opacity-50">
+                        <div
+                            class="size-10 bg-white/10 text-white rounded-none flex items-center justify-center font-black border border-white/20 skew-x-[-10deg]">
+                            <span class="skew-x-[10deg]">2</span>
+                        </div>
+                        <span class="text-[10px] font-black uppercase tracking-widest">Pago</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="max-w-[1200px] mx-auto px-6 lg:px-10 pb-24">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                    <div class="lg:col-span-7 space-y-10">
+                        <div>
+                            <h1
+                                class="text-5xl lg:text-7xl font-black uppercase tracking-wide mb-4 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">
+                                REGISTRO <span
+                                    class="text-neon-yellow drop-shadow-[0_0_20px_rgba(255,255,0,0.7)]">ASISTENTES</span>
+                            </h1>
+                            <p class="section-subtitle">Proporciona tus datos para desbloquear la noche
+                                eléctrica. Tu boleto será enviado a este correo electrónico.</p>
+                        </div>
+                        <form
+                            class="space-y-8 bg-white/5 p-8 lg:p-12 border border-white/10 relative overflow-hidden backdrop-blur-sm">
+                            <div
+                                class="absolute top-0 left-0 w-full h-[4px] bg-gradient-to-r from-neon-lime via-neon-yellow to-transparent">
+                            </div>
+                            <div class="space-y-6">
+                                <div class="space-y-2">
+                                    <label
+                                        class="text-[10px] font-black uppercase tracking-[0.3em] text-neon-lime ml-1">Nombre
+                                        Completo</label>
+                                    <input id="full-name"
+                                        class="w-full bg-black/50 border-2 border-white/10 p-4 text-white font-bold uppercase tracking-widest focus:ring-0 focus:outline-none neon-input transition-all placeholder:text-white/20"
+                                        placeholder="TU NOMBRE" type="text" />
+                                </div>
+                                <div class="space-y-2">
+                                    <label
+                                        class="text-[10px] font-black uppercase tracking-[0.3em] text-neon-lime ml-1">Correo
+                                        Electrónico</label>
+                                    <input id="email"
+                                        class="w-full bg-black/50 border-2 border-white/10 p-4 text-white font-bold uppercase tracking-widest focus:ring-0 focus:outline-none neon-input transition-all placeholder:text-white/20"
+                                        placeholder="CORREO@EJEMPLO.COM" type="email" />
+                                </div>
+                                <div class="space-y-2">
+                                    <label
+                                        class="text-[10px] font-black uppercase tracking-[0.3em] text-neon-lime ml-1">Número
+                                        de Teléfono</label>
+                                    <input id="phone"
+                                        class="w-full bg-black/50 border-2 border-white/10 p-4 text-white font-bold uppercase tracking-widest focus:ring-0 focus:outline-none neon-input transition-all placeholder:text-white/20"
+                                        placeholder="+52 (000) 000-0000" type="tel" />
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="space-y-2">
+                                        <label
+                                            class="text-[10px] font-black uppercase tracking-[0.3em] text-neon-lime ml-1">Cantidad</label>
+                                        <select id="quantity"
+                                            class="w-full bg-black/50 border-2 border-white/10 p-4 text-white font-bold uppercase tracking-widest focus:ring-0 focus:outline-none neon-input transition-all">
+                                            <option value="1">1 Boleto</option>
+                                            <option value="2">2 Boletos</option>
+                                            <option value="3">3 Boletos</option>
+                                            <option value="4">4 Boletos</option>
+                                            <option value="5">5 Boletos</option>
+                                        </select>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label
+                                            class="text-[10px] font-black uppercase tracking-[0.3em] text-neon-lime ml-1">Código
+                                            Descuento</label>
+                                        <input id="discount-code"
+                                            class="w-full bg-black/50 border-2 border-white/10 p-4 text-white font-bold uppercase tracking-widest focus:ring-0 focus:outline-none neon-input transition-all placeholder:text-white/20"
+                                            placeholder="OPCIONAL" type="text" />
+                                    </div>
+                                </div>
+                                <div id="discount-message"
+                                    class="hidden p-3 bg-neon-lime/10 border border-neon-lime/30">
+                                    <p class="text-[10px] font-black uppercase tracking-widest text-neon-lime"></p>
+                                </div>
+                                <div id="bulk-discount-message"
+                                    class="hidden p-3 bg-neon-yellow/10 border border-neon-yellow/30">
+                                    <p class="text-[10px] font-black uppercase tracking-widest text-neon-yellow">🎉
+                                        Descuento por Volumen Aplicado: $20 por boleto</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 p-4 bg-neon-lime/5 border border-neon-lime/20">
+                                <input class="size-5 bg-midnight border-white/20 text-neon-lime focus:ring-neon-lime"
+                                    id="terms" type="checkbox" />
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-slate-300"
+                                    for="terms">Acepto los términos y el Protocolo de Seguridad</label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="lg:col-span-5 lg:sticky lg:top-32">
+                        <div class="relative">
+                            <div
+                                class="absolute -top-10 -right-10 size-40 bg-neon-lime/20 rounded-full blur-[60px] animate-pulse-slow">
+                            </div>
+                            <div
+                                class="absolute -bottom-10 -left-10 size-40 bg-neon-yellow/20 rounded-full blur-[60px] animate-pulse-slow">
+                            </div>
+
+                            <div
+                                class="p-8 bg-black/80 backdrop-blur-2xl relative overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+                                <div
+                                    class="absolute inset-0 z-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
+                                </div>
+
+                                <div class="relative z-10 mb-8 border-b border-white/10 pb-6">
+                                    <h3 class="text-[10px] font-black uppercase tracking-[0.5em] text-neon-yellow mb-6">
+                                        Resumen del Pedido</h3>
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div>
+                                            <h4
+                                                class="text-2xl font-black uppercase tracking-wide text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
+                                                Entrada General</h4>
+                                            <p class="text-[9px] text-slate-500 uppercase tracking-widest mt-1">
+                                                Fase 1</p>
+                                        </div>
+                                    </div>
+                                    <div id="pricing-details" class="space-y-2 mt-4 text-sm">
+                                        <div class="flex justify-between text-slate-400">
+                                            <span id="quantity-display">1 boleto × $25.00</span>
+                                            <span id="subtotal-display">$25.00</span>
+                                        </div>
+                                        <div id="discount-line" class="hidden flex justify-between text-neon-lime">
+                                            <span id="discount-label">Descuento</span>
+                                            <span id="discount-amount">-$0.00</span>
+                                        </div>
+                                        <div
+                                            class="flex justify-between text-slate-400 text-xs pt-2 border-t border-white/5">
+                                            <span>Tarifas de Plataforma</span>
+                                            <span>$5.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="relative z-10 flex justify-between items-end mb-10">
+                                    <span class="text-[10px] font-black uppercase tracking-[0.3em] text-white">Monto
+                                        Total</span>
+                                    <span id="total-price"
+                                        class="text-4xl font-black text-neon-lime font-display tracking-tighter drop-shadow-[0_0_10px_rgba(204,255,0,0.3)]">$30</span>
+                                </div>
+                                <button id="checkout-btn"
+                                    class="relative z-10 w-full h-16 bg-neon-lime text-black font-black text-sm uppercase tracking-[0.2em] shadow-[0_0_30px_rgba(204,255,0,0.4)] hover:shadow-[0_0_50px_rgba(204,255,0,0.6)] hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-4 group overflow-hidden skew-x-[-5deg]">
+                                    <span class="relative z-10 flex items-center gap-4 skew-x-[5deg]">
+                                        Continuar
+                                        <span
+                                            class="material-symbols-outlined transition-transform group-hover:translate-x-2">arrow_forward</span>
+                                    </span>
+                                </button>
+                                <div id="wallet_container" class="relative z-10"></div>
+                                <div class="mt-8 flex items-center justify-center gap-4 opacity-40 relative z-10">
+                                    <span class="material-symbols-outlined text-sm">verified_user</span>
+                                    <p class="text-[8px] font-black uppercase tracking-[0.3em]">Transacción Segura SSL
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+
+
+        <footer class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo-group">
+                    <div class="footer-logo-item">
+                        <img src="assets/GD WY.png" alt="Grupo Divtic" class="footer-logo-img">
+                    </div>
+                    <div class="footer-logo-item">
+                        <img src="assets/GI WY.png" alt="Grupo Ingenierias" class="footer-logo-img">
+                    </div>
+                    <div class="footer-logo-item">
+                        <img src="assets/GB WY.png" alt="Grupo Basicas" class="footer-logo-img">
+                    </div>
+                </div>
+                <div class="footer-copyright">
+                    © 2026 Neon Night Party
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

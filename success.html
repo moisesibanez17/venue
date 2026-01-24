@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>¡Pago Exitoso! | Neón Night Party</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="js/tailwind-config.js"></script>
+    <link href="css/style.css" rel="stylesheet" />
+</head>
+
+<body
+    class="bg-brand-black text-white selection:bg-neon-lime selection:text-black moving-gradient-bg min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+    <div class="fixed inset-0 noise-overlay pointer-events-none z-[60]"></div>
+
+    <div class="relative z-10 max-w-md w-full p-6">
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-black uppercase font-display italic tracking-tighter mb-4 text-neon-lime">
+                ¡Acceso Concedido!</h1>
+            <p class="text-slate-300">Tu lugar en la fiesta está asegurado.</p>
+        </div>
+
+        <div
+            class="bg-black/80 backdrop-blur-xl p-8 border-[6px] border-white relative overflow-hidden group shadow-[0_0_50px_rgba(204,255,0,0.2)]">
+            <div class="neon-line-flow top-0 opacity-40"></div>
+
+            <div id="loading" class="flex flex-col items-center justify-center py-10 space-y-4">
+                <span class="relative flex h-3 w-3">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-lime opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-neon-lime"></span>
+                </span>
+                <p class="text-xs font-bold uppercase tracking-widest text-neon-lime animate-pulse">Generando Boleto
+                    Digital...</p>
+            </div>
+
+            <div id="ticket-content" class="hidden space-y-6 text-center">
+                <div
+                    class="bg-white p-4 inline-block mx-auto shadow-[0_0_30px_rgba(204,255,0,0.3)] transform -rotate-2">
+                    <img id="qr-image" src="" alt="Código QR de Acceso" class="w-48 h-48 object-contain" />
+                </div>
+
+                <div class="space-y-2">
+                    <h2 id="user-name" class="text-xl font-black uppercase tracking-widest text-white"></h2>
+                    <p class="text-xs text-slate-500 uppercase tracking-[0.2em]">ID de Boleto: <span id="ticket-id"
+                            class="text-neon-lime"></span></p>
+                </div>
+
+                <div class="pt-6 border-t border-white/10">
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest leading-relaxed">
+                        Presenta este código QR en la entrada.
+                        <br />NO LO COMPARTAS. Es válido para un solo acceso.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center">
+            <a href="index.html"
+                class="text-xs font-bold uppercase tracking-widest text-neon-lime hover:text-white transition-colors flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                Volver al Inicio
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Mercado Pago redirige con ?collection_id=...&external_reference=TICKET_TOKEN...
+            const params = new URLSearchParams(window.location.search);
+            const status = params.get('collection_status');
+            const token = params.get('external_reference');
+
+            const loading = document.getElementById('loading');
+            const content = document.getElementById('ticket-content');
+
+            if (status === 'approved' && token) {
+                try {
+                    // Obtener datos del boleto desde nuestro backend
+                    const response = await fetch(`/api/ticket/${token}`);
+                    if (!response.ok) throw new Error('Error obteniendo boleto');
+
+                    const data = await response.json();
+
+                    document.getElementById('qr-image').src = data.qr_code;
+                    document.getElementById('user-name').textContent = data.full_name;
+                    document.getElementById('ticket-id').textContent = data.ticket_token.slice(0, 8) + '...';
+
+                    loading.classList.add('hidden');
+                    content.classList.remove('hidden');
+
+                } catch (error) {
+                    loading.innerHTML = `<p class="text-neon-yellow font-bold">Error cargando boleto. Contacta a soporte.</p>`;
+                }
+            } else {
+                loading.innerHTML = `<p class="text-slate-400">Estado del pago: <span class="text-white">${status || 'Desconocido'}</span></p>`;
+            }
+        });
+    </script>
+</body>
+
+</html>
