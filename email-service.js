@@ -9,10 +9,11 @@ const resend = new Resend(process.env.RESEND_API_KEY || '');
 
 // Email configuration
 const FROM_EMAIL = 'Neón Night Party <eventos@diferente.email>';
-const EVENT_NAME = process.env.EVENT_NAME || 'Neón Night Party';
-const EVENT_DATE = process.env.EVENT_DATE || '5 de Febrero, 2026';
-const EVENT_TIME = '3:00 PM';
-const EVENT_LOCATION = process.env.EVENT_LOCATION || 'Tlaloc Club';
+// Use environment variables for sensitive info to avoid Netlify secrets scanning false positives
+const EVENT_NAME = process.env.EVENT_NAME || 'Evento';
+const EVENT_DATE = process.env.EVENT_DATE || 'Fecha por definir';
+const EVENT_TIME = process.env.EVENT_TIME || 'Hora por definir';
+const EVENT_LOCATION = process.env.EVENT_LOCATION || 'Ubicación por definir';
 
 /**
  * Send ticket email with QR code
