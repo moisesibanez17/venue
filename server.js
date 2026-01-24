@@ -17,7 +17,7 @@ const PORT = 3000;
 
 // Configuración de Mercado Pago
 const { MercadoPagoConfig, Preference, Payment } = require('mercadopago');
-const client = new MercadoPagoConfig({ accessToken: 'TEST-592848526954325-011721-e3b35f98c55acb082c08c65851a2decc-3141853005' });
+const client = new MercadoPagoConfig({ accessToken: process.env.MERCADOPAGO_ACCESS_TOKEN });
 
 /**
  * Calculate ticket price based on quantity
