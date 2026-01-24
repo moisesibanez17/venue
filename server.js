@@ -715,6 +715,12 @@ app.post('/api/admin/send-reminders', requireAuth, async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+// Export app for serverless usage
+module.exports = app;
+
+// Only start the server if running directly (not required by module)
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Servidor corriendo en http://localhost:${PORT}`);
+    });
+}
