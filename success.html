@@ -49,21 +49,26 @@
                 </div>
 
                 <div class="pt-6 border-t border-white/10">
-                    <p class="text-[10px] text-slate-400 uppercase tracking-widest leading-relaxed">
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest leading-relaxed mb-6">
                         Presenta este código QR en la entrada.
                         <br />NO LO COMPARTAS. Es válido para un solo acceso.
                     </p>
+
+                    <button id="download-btn"
+                        class="w-full h-12 bg-white/10 text-white font-black uppercase tracking-widest hover:bg-white/20 transition-all flex items-center justify-center gap-2 mb-4">
+                        <span class="material-symbols-outlined text-sm">download</span>
+                        Descargar Boleto
+                    </button>
+
+                    <a href="index.html"
+                        class="block text-xs font-bold uppercase tracking-widest text-neon-lime hover:text-white transition-colors">
+                        Volver al Inicio
+                    </a>
                 </div>
             </div>
         </div>
 
-        <div class="mt-8 text-center">
-            <a href="index.html"
-                class="text-xs font-bold uppercase tracking-widest text-neon-lime hover:text-white transition-colors flex items-center justify-center gap-2">
-                <span class="material-symbols-outlined text-sm">arrow_back</span>
-                Volver al Inicio
-            </a>
-        </div>
+        <!-- Back button moved inside card -->
     </div>
 
     <script>
@@ -88,6 +93,16 @@
                     document.getElementById('user-name').textContent = data.full_name;
                     document.getElementById('ticket-id').textContent = data.ticket_token.slice(0, 8) + '...';
 
+                    // Setup download button
+                    document.getElementById('download-btn').addEventListener('click', () => {
+                        const link = document.createElement('a');
+                        link.href = data.qr_code;
+                        link.download = `Ticket-NeonParty-${data.ticket_token.slice(0, 8)}.png`;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    });
+
                     loading.classList.add('hidden');
                     content.classList.remove('hidden');
 
@@ -95,7 +110,8 @@
                     loading.innerHTML = `<p class="text-neon-yellow font-bold">Error cargando boleto. Contacta a soporte.</p>`;
                 }
             } else {
-                loading.innerHTML = `<p class="text-slate-400">Estado del pago: <span class="text-white">${status || 'Desconocido'}</span></p>`;
+                loading.innerHTML = `<p class="text-slate-400">Estado del pago: <span class="text-white">${status || 'Desconocido'}</span></p>
+                <a href="index.html" class="mt-4 inline-block text-neon-lime font-bold uppercase tracking-widest text-xs">Volver al inicio</a>`;
             }
         });
     </script>
