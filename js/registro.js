@@ -18,7 +18,7 @@ const totalPrice = document.getElementById('total-price');
  * Calculate price per ticket based on quantity
  */
 function calculatePricePerTicket(quantity) {
-    return quantity >= 3 ? 20 : 25;
+    return quantity >= 4 ? 20 : 25;
 }
 
 /**
@@ -31,7 +31,7 @@ function updatePricing() {
     const platformFee = 5;
 
     // Show/hide bulk discount message
-    if (quantity >= 3) {
+    if (quantity >= 4) {
         bulkDiscountMessage.classList.remove('hidden');
     } else {
         bulkDiscountMessage.classList.add('hidden');

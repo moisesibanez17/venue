@@ -30,8 +30,8 @@ if (registrationData.pricing) {
             `-$${pricing.discountAmount.toFixed(2)}`;
     }
 
-    // Show bulk discount badge if 3+ tickets
-    if (quantity >= 3) {
+    // Show bulk discount badge if 4+ tickets
+    if (quantity >= 4) {
         document.getElementById('bulk-discount-badge').classList.remove('hidden');
     }
 

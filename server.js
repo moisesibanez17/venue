@@ -25,7 +25,7 @@ const client = new MercadoPagoConfig({ accessToken: process.env.MERCADOPAGO_ACCE
  * 3+ tickets: $20 each (bulk discount)
  */
 function calculatePricePerTicket(quantity) {
-    return quantity >= 3 ? 20 : 25;
+    return quantity >= 4 ? 20 : 25;
 }
 
 /**

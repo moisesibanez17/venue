@@ -28,14 +28,16 @@
             <div class="ticket-border-glow bg-midnight/90 backdrop-blur-xl p-8 rounded-lg border border-white/10">
                 <form id="login-form" class="space-y-6">
                     <div>
-                        <label class="text-[10px] font-black uppercase tracking-wide text-neon-cyan">Usuario</label>
+                        <label
+                            class="text-xs font-black uppercase tracking-wide text-neon-cyan drop-shadow-sm">Usuario</label>
                         <input id="login-username" type="text" required
-                            class="w-full bg-midnight/50 border-2 border-white/10 p-3 text-white font-bold mt-2 focus:ring-0 focus:outline-none neon-input transition-all">
+                            class="w-full bg-black/60 border-2 border-white/20 p-3 text-white font-bold mt-2 focus:ring-0 focus:outline-none neon-input transition-all placeholder:text-white/30">
                     </div>
                     <div>
-                        <label class="text-[10px] font-black uppercase tracking-wide text-neon-cyan">Contraseña</label>
+                        <label
+                            class="text-xs font-black uppercase tracking-wide text-neon-cyan drop-shadow-sm">Contraseña</label>
                         <input id="login-password" type="password" required
-                            class="w-full bg-midnight/50 border-2 border-white/10 p-3 text-white font-bold mt-2 focus:ring-0 focus:outline-none neon-input transition-all">
+                            class="w-full bg-black/60 border-2 border-white/20 p-3 text-white font-bold mt-2 focus:ring-0 focus:outline-none neon-input transition-all placeholder:text-white/30">
                     </div>
                     <div id="login-error" class="hidden p-3 bg-neon-pink/10 border border-neon-pink/30">
                         <p class="text-xs text-neon-pink uppercase"></p>
@@ -70,19 +72,19 @@
         <div class="bg-midnight/80 border-b border-white/10">
             <div class="max-w-7xl mx-auto flex gap-1 p-1">
                 <button data-tab="scanner"
-                    class="tab-btn flex-1 py-3 px-4 text-xs font-black uppercase tracking-wide transition-all">
+                    class="tab-btn flex-1 py-3 px-4 text-xs lg:text-sm font-black uppercase tracking-wide transition-all hover:bg-white/10">
                     QR Scanner
                 </button>
                 <button data-tab="free-tickets"
-                    class="tab-btn flex-1 py-3 px-4 text-xs font-black uppercase tracking-wide transition-all">
+                    class="tab-btn flex-1 py-3 px-4 text-xs lg:text-sm font-black uppercase tracking-wide transition-all hover:bg-white/10">
                     Boletos Gratis
                 </button>
                 <button data-tab="discounts"
-                    class="tab-btn flex-1 py-3 px-4 text-xs font-black uppercase tracking-wide transition-all">
-                    Códigos de Descuento
+                    class="tab-btn flex-1 py-3 px-4 text-xs lg:text-sm font-black uppercase tracking-wide transition-all hover:bg-white/10">
+                    Códigos
                 </button>
                 <button data-tab="reminders"
-                    class="tab-btn flex-1 py-3 px-4 text-xs font-black uppercase tracking-wide transition-all">
+                    class="tab-btn flex-1 py-3 px-4 text-xs lg:text-sm font-black uppercase tracking-wide transition-all hover:bg-white/10">
                     Recordatorios
                 </button>
             </div>
@@ -118,17 +120,23 @@
                     </div>
 
                     <div class="mt-6 grid grid-cols-3 gap-4">
-                        <div class="bg-white/5 p-4 border border-white/10 text-center">
-                            <div id="valid-count" class="text-3xl font-black text-neon-cyan">0</div>
-                            <div class="text-xs text-slate-500 uppercase tracking-widest mt-1">Válidos</div>
+                        <div class="bg-white/10 p-4 border border-white/20 text-center">
+                            <div id="valid-count"
+                                class="text-3xl font-black text-neon-cyan drop-shadow-[0_0_10px_rgba(0,255,255,0.5)]">0
+                            </div>
+                            <div class="text-xs text-white font-bold uppercase tracking-widest mt-1">Válidos</div>
                         </div>
-                        <div class="bg-white/5 p-4 border border-white/10 text-center">
-                            <div id="invalid-count" class="text-3xl font-black text-neon-pink">0</div>
-                            <div class="text-xs text-slate-500 uppercase tracking-widest mt-1">Inválidos</div>
+                        <div class="bg-white/10 p-4 border border-white/20 text-center">
+                            <div id="invalid-count"
+                                class="text-3xl font-black text-neon-pink drop-shadow-[0_0_10px_rgba(255,0,255,0.5)]">0
+                            </div>
+                            <div class="text-xs text-white font-bold uppercase tracking-widest mt-1">Inválidos</div>
                         </div>
-                        <div class="bg-white/5 p-4 border border-white/10 text-center">
-                            <div id="total-count" class="text-3xl font-black text-white">0</div>
-                            <div class="text-xs text-slate-500 uppercase tracking-widest mt-1">Total</div>
+                        <div class="bg-white/10 p-4 border border-white/20 text-center">
+                            <div id="total-count"
+                                class="text-3xl font-black text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">0
+                            </div>
+                            <div class="text-xs text-white font-bold uppercase tracking-widest mt-1">Total</div>
                         </div>
                     </div>
                 </div>
