@@ -458,6 +458,115 @@ sendRemindersBtn.addEventListener('click', async () => {
         reminderMessage.textContent = '❌ Error enviando recordatorios: ' + error.message;
     } finally {
         sendRemindersBtn.disabled = false;
-        sendRemindersBtn.textContent = 'Enviar Recordatorios';
     }
 });
+
+// ============================================
+// MANUAL CODE VALIDATION
+// ============================================
+
+const manualCodeForm = document.getElementById('manual-code-form');
+const manualCodeInput = document.getElementById('manual-code-input');
+
+manualCodeForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const code = manualCodeInput.value.trim();
+    if (!code) return;
+
+    // Hide result container before validation
+    resultContainer.classList.add('hidden');
+
+    try {
+        const response = await fetch(`/api/validate/${code}`, {
+            method: 'POST'
+        });
+
+        const data = await response.json();
+        showResult(data.valid, data.message, data.ticket);
+
+        // Clear input on success
+        if (data.valid) {
+            manualCodeInput.value = '';
+        }
+    } catch (error) {
+        console.error('Error validando código:', error);
+        showResult(false, 'Error de conexión al servidor');
+    }
+});
+
+// ============================================
+// STATISTICS DASHBOARD
+// ============================================
+
+async function loadStatistics() {
+    try {
+        const response = await fetch('/api/admin/statistics', {
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            const stats = data.statistics;
+
+            // Update main stats
+            document.getElementById('stats-total-tickets').textContent = stats.totalTickets;
+            document.getElementById('stats-paid-tickets').textContent = stats.paidTickets;
+            document.getElementById('stats-free-tickets').textContent = stats.freeTickets;
+            document.getElementById('stats-total-revenue').textContent = `$${stats.totalRevenue}`;
+
+            // Update secondary stats
+            document.getElementById('stats-scanned-tickets').textContent = stats.scannedTickets;
+            document.getElementById('stats-pending-tickets').textContent = stats.pendingTickets;
+            document.getElementById('stats-avg-price').textContent = `$${stats.avgPrice}`;
+
+            // Display recent sales
+            displayRecentSales(stats.recentSales);
+        }
+    } catch (error) {
+        console.error('Error loading statistics:', error);
+    }
+}
+
+function displayRecentSales(sales) {
+    const container = document.getElementById('recent-sales-list');
+
+    if (!sales || sales.length === 0) {
+        container.innerHTML = '<p class="text-slate-500 text-sm text-center py-8">No hay ventas recientes</p>';
+        return;
+    }
+
+    container.innerHTML = sales.map(sale => `
+        <div class="bg-white/5 border border-white/10 p-4 flex justify-between items-center">
+            <div class="flex-1">
+                <div class="font-bold text-white">${sale.full_name}</div>
+                <div class="text-xs text-slate-400 mt-1">${sale.email}</div>
+                <div class="text-xs text-slate-500 mt-1">
+                    ${new Date(sale.created_at).toLocaleDateString()} · ${sale.quantity} boleto(s)
+                </div>
+            </div>
+            <div class="text-right">
+                <div class="font-black ${sale.is_free ? 'text-neon-yellow' : 'text-neon-lime'}">
+                    ${sale.is_free ? 'GRATIS' : `$${sale.final_price}`}
+                </div>
+                <div class="text-xs ${sale.scanned ? 'text-neon-cyan' : 'text-slate-500'} mt-1">
+                    ${sale.scanned ? '✓ Escaneado' : 'Pendiente'}
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Load statistics when statistics tab is opened
+tabButtons.forEach(btn => {
+    const originalClickHandler = btn.onclick;
+    btn.addEventListener('click', () => {
+        if (btn.dataset.tab === 'statistics') {
+            loadStatistics();
+        }
+    });
+});
+

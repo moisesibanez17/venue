@@ -518,6 +518,66 @@ app.get('/api/validate-discount/:code', async (req, res) => {
     }
 });
 
+// Get statistics (requires admin auth)
+app.get('/api/admin/statistics', requireAuth, async (req, res) => {
+    try {
+        // Get all bookings
+        const { data: allBookings, error: allError } = await supabase
+            .from('bookings')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (allError) throw allError;
+
+        // Calculate statistics
+        const totalTickets = allBookings.length;
+        const paidTickets = allBookings.filter(b => b.payment_status === 'completed' && (!b.discount_code || b.discount_code !== 'FREE_ADMIN')).length;
+        const freeTickets = allBookings.filter(b => b.discount_code === 'FREE_ADMIN').length;
+        const scannedTickets = allBookings.filter(b => b.scanned_at !== null).length;
+        const pendingTickets = allBookings.filter(b => b.payment_status === 'completed' && b.scanned_at === null).length;
+
+        // Calculate total revenue (only from paid tickets)
+        const totalRevenue = allBookings
+            .filter(b => b.payment_status === 'completed' && b.final_price > 0)
+            .reduce((sum, b) => sum + (Number(b.final_price) || 0), 0);
+
+        // Calculate average price
+        const avgPrice = paidTickets > 0 ? totalRevenue / paidTickets : 0;
+
+        // Get recent sales (last 10)
+        const recentSales = allBookings
+            .filter(b => b.payment_status === 'completed')
+            .slice(0, 10)
+            .map(b => ({
+                full_name: b.full_name,
+                email: b.email,
+                quantity: b.quantity || 1,
+                final_price: b.final_price,
+                created_at: b.created_at,
+                is_free: b.discount_code === 'FREE_ADMIN',
+                scanned: b.scanned_at !== null
+            }));
+
+        res.json({
+            success: true,
+            statistics: {
+                totalTickets,
+                paidTickets,
+                freeTickets,
+                scannedTickets,
+                pendingTickets,
+                totalRevenue: totalRevenue.toFixed(2),
+                avgPrice: avgPrice.toFixed(2),
+                recentSales
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching statistics:', error);
+        res.status(500).json({ error: 'Error obteniendo estadísticas' });
+    }
+});
+
+
 // Generate free ticket (requires admin auth)
 app.post('/api/admin/generate-free-ticket', requireAuth, async (req, res) => {
     const { full_name, email, phone, quantity = 1 } = req.body;

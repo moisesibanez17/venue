@@ -3,7 +3,8 @@
 
 const { Resend } = require('resend');
 const QRCode = require('qrcode');
-
+const { generateTicketImage } = require('./ticket-image-generator');
+require('dotenv').config();
 // Initialize Resend with API key
 const resend = new Resend(process.env.RESEND_API_KEY || '');
 
@@ -28,6 +29,27 @@ async function sendTicketEmail(ticketData) {
     const { email, full_name, quantity, ticket_token, qr_code } = ticketData;
 
     try {
+        // Generate ticket image with QR code
+        const ticketImageBuffer = await generateTicketImage({
+            full_name,
+            quantity,
+            ticket_token,
+            qr_code,
+            event_name: EVENT_NAME,
+            event_date: EVENT_DATE,
+            event_time: EVENT_TIME,
+            event_location: EVENT_LOCATION
+        });
+
+        // Convert ticket image to base64 for email attachment
+        const ticketImageBase64 = ticketImageBuffer.toString('base64');
+
+        // Keep QR data URL for inline display in HTML
+        const qrDataUrl = qr_code;
+
+        // Also get base64 for QR attachment
+        const base64Data = qr_code.replace(/^data:image\/png;base64,/, '');
+
         const htmlContent = `
 <!DOCTYPE html>
 <html>
@@ -36,12 +58,12 @@ async function sendTicketEmail(ticketData) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tu Boleto - ${EVENT_NAME}</title>
 </head>
-<body style="margin: 0; padding: 0; font-family: 'Arial', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-    <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; background-color: #1a1a2e;">
+<body style="margin: 0; padding: 0; font-family: 'Arial', sans-serif; background-color: #000000;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 0 auto; background-color: #000000;">
         <!-- Header -->
         <tr>
-            <td style="padding: 40px 30px; text-align: center; background: linear-gradient(135deg, #ff006e 0%, #8338ec 50%, #3a86ff 100%);">
-                <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 0 20px rgba(255,255,255,0.5);">
+            <td style="padding: 40px 30px; text-align: center; background: linear-gradient(135deg, #ccff00 0%, #ffff00 100%);">
+                <h1 style="margin: 0; color: #000000; font-size: 32px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                     🎉 ${EVENT_NAME}
                 </h1>
             </td>
@@ -50,82 +72,35 @@ async function sendTicketEmail(ticketData) {
         <!-- Content -->
         <tr>
             <td style="padding: 40px 30px;">
-                <h2 style="color: #00f5ff; margin: 0 0 20px; font-size: 24px; text-transform: uppercase;">
+                <h2 style="color: #ccff00; margin: 0 0 20px; font-size: 24px; text-transform: uppercase; text-shadow: 0 0 10px rgba(204,255,0,0.5);">
                     ¡Tu Boleto Está Listo!
                 </h2>
                 
                 <p style="color: #ffffff; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-                    Hola <strong style="color: #ff006e;">${full_name}</strong>,
+                    Hola <strong style="color: #ccff00;">${full_name}</strong>,
                 </p>
                 
                 <p style="color: #cccccc; font-size: 16px; line-height: 1.6; margin: 0 0 30px;">
                     ¡Gracias por tu compra! Tu boleto para <strong>${EVENT_NAME}</strong> ha sido confirmado. 
-                    Guarda este código QR y preséntalo a la entrada del evento.
+                    A continuación encontrarás tu boleto digital.
                 </p>
                 
-                <!-- Ticket Details Box -->
-                <table width="100%" cellpadding="0" cellspacing="0" style="background: rgba(0,245,255,0.1); border: 2px solid #00f5ff; border-radius: 8px; margin-bottom: 30px;">
-                    <tr>
-                        <td style="padding: 20px;">
-                            <table width="100%" cellpadding="8" cellspacing="0">
-                                <tr>
-                                    <td style="color: #00f5ff; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
-                                        📅 Fecha
-                                    </td>
-                                    <td style="color: #ffffff; font-size: 14px; text-align: right; font-weight: bold;">
-                                        ${EVENT_DATE}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="color: #00f5ff; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
-                                        🕐 Hora
-                                    </td>
-                                    <td style="color: #ffffff; font-size: 14px; text-align: right; font-weight: bold;">
-                                        ${EVENT_TIME}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="color: #00f5ff; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
-                                        📍 Lugar
-                                    </td>
-                                    <td style="color: #ffffff; font-size: 14px; text-align: right; font-weight: bold;">
-                                        ${EVENT_LOCATION}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="color: #00f5ff; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
-                                        🎫 Boletos
-                                    </td>
-                                    <td style="color: #ffffff; font-size: 14px; text-align: right; font-weight: bold;">
-                                        ${quantity} persona${quantity > 1 ? 's' : ''}
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-                
-                <!-- QR Code -->
-                <div style="text-align: center; background: #ffffff; padding: 30px; border-radius: 12px; margin-bottom: 30px;">
-                    <p style="color: #1a1a2e; font-size: 14px; font-weight: bold; margin: 0 0 15px; text-transform: uppercase;">
-                        Tu Código de Entrada
-                    </p>
-                    <img src="${qr_code}" alt="QR Code" style="max-width: 250px; width: 100%; height: auto; display: block; margin: 0 auto;" />
-                    <p style="color: #666666; font-size: 12px; margin: 15px 0 0;">
-                        Código: <strong>${ticket_token.substring(0, 8).toUpperCase()}</strong>
-                    </p>
+                <!-- Ticket Image -->
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <img src="data:image/png;base64,${ticketImageBase64}" alt="Tu Boleto" style="max-width: 100%; width: 600px; height: auto; display: block; margin: 0 auto; border: 3px solid #ccff00; border-radius: 8px;" />
                 </div>
                 
                 <!-- Important Info -->
-                <div style="background: rgba(255,0,110,0.1); border-left: 4px solid #ff006e; padding: 15px; margin-bottom: 20px;">
-                    <p style="color: #ff006e; font-size: 14px; font-weight: bold; margin: 0 0 8px;">
+                <div style="background: rgba(255,255,0,0.1); border-left: 4px solid #ffff00; padding: 15px; margin-bottom: 20px;">
+                    <p style="color: #ffff00; font-size: 14px; font-weight: bold; margin: 0 0 8px;">
                         ⚠️ IMPORTANTE
                     </p>
                     <ul style="color: #cccccc; font-size: 13px; margin: 0; padding-left: 20px;">
-                        <li style="margin-bottom: 5px;">Presenta este QR en tu dispositivo o impreso</li>
+                        <li style="margin-bottom: 5px;">Guarda esta imagen en tu dispositivo</li>
+                        <li style="margin-bottom: 5px;">Presenta el código QR en la entrada</li>
                         <li style="margin-bottom: 5px;">Llega temprano para evitar filas</li>
                         <li style="margin-bottom: 5px;">Se requiere identificación oficial</li>
-                        <li>Código válido para ${quantity} persona${quantity > 1 ? 's' : ''}</li>
+                        <li>Válido para ${quantity} persona${quantity > 1 ? 's' : ''}</li>
                     </ul>
                 </div>
             </td>
@@ -133,11 +108,11 @@ async function sendTicketEmail(ticketData) {
         
         <!-- Footer -->
         <tr>
-            <td style="padding: 30px; text-align: center; background-color: #0d0d1a;">
+            <td style="padding: 30px; text-align: center; background-color: #000000; border-top: 2px solid #ccff00;">
                 <p style="color: #888888; font-size: 12px; margin: 0 0 10px;">
                     ¿Tienes preguntas? Contáctanos
                 </p>
-                <p style="color: #00f5ff; font-size: 14px; margin: 0;">
+                <p style="color: #ccff00; font-size: 14px; margin: 0;">
                     <strong>${EVENT_NAME}</strong>
                 </p>
             </td>
@@ -147,11 +122,19 @@ async function sendTicketEmail(ticketData) {
 </html>
         `;
 
+
         const result = await resend.emails.send({
             from: FROM_EMAIL,
             to: email,
             subject: `🎫 Tu Boleto - ${EVENT_NAME}`,
             html: htmlContent,
+            attachments: [
+                {
+                    filename: `boleto-${ticket_token.substring(0, 8)}.png`,
+                    content: ticketImageBase64,
+                    disposition: 'attachment'
+                }
+            ]
         });
 
         console.log('✅ Ticket email sent to:', email, '- ID:', result.id);

@@ -83,6 +83,10 @@
                     class="tab-btn flex-1 py-3 px-4 text-xs lg:text-sm font-black uppercase tracking-wide transition-all hover:bg-white/10">
                     Códigos
                 </button>
+                <button data-tab="statistics"
+                    class="tab-btn flex-1 py-3 px-4 text-xs lg:text-sm font-black uppercase tracking-wide transition-all hover:bg-white/10">
+                    Estadísticas
+                </button>
                 <button data-tab="reminders"
                     class="tab-btn flex-1 py-3 px-4 text-xs lg:text-sm font-black uppercase tracking-wide transition-all hover:bg-white/10">
                     Recordatorios
@@ -108,6 +112,21 @@
                                 Detener Scanner
                             </button>
                         </div>
+                    </div>
+
+                    <!-- Manual Code Entry -->
+                    <div
+                        class="ticket-border-glow bg-midnight/90 backdrop-blur-xl p-6 rounded-lg border border-white/10 mb-6">
+                        <h3 class="text-lg font-black uppercase mb-4 text-neon-lime">Validar por Código</h3>
+                        <form id="manual-code-form" class="flex gap-4">
+                            <input id="manual-code-input" type="text" placeholder="Ingresa el código del ticket"
+                                required
+                                class="flex-1 bg-midnight/50 border-2 border-white/10 p-3 text-white font-bold uppercase focus:ring-0 focus:outline-none neon-input transition-all">
+                            <button type="submit"
+                                class="px-8 h-12 bg-neon-lime text-midnight font-black text-sm uppercase tracking-widest shadow-[0_0_30px_rgba(204,255,0,0.4)] hover:shadow-[0_0_50px_rgba(204,255,0,0.6)] transition-all">
+                                Validar
+                            </button>
+                        </form>
                     </div>
 
                     <div id="result-container"
@@ -253,6 +272,89 @@
                             <div id="discounts-list" class="space-y-3 max-h-[600px] overflow-y-auto">
                                 <!-- Discount codes will be loaded here -->
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Tab -->
+            <div id="statistics-tab" class="tab-content hidden">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="text-2xl font-black uppercase mb-6 text-neon-lime">📊 Estadísticas de Ventas</h2>
+
+                    <!-- Main Stats Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                        <!-- Total Tickets Sold -->
+                        <div
+                            class="ticket-border-glow bg-midnight/90 backdrop-blur-xl p-6 rounded-lg border border-white/10 text-center">
+                            <div class="text-xs font-black uppercase tracking-wide text-neon-lime mb-2">Total Boletos
+                            </div>
+                            <div id="stats-total-tickets"
+                                class="text-4xl font-black text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">0
+                            </div>
+                        </div>
+
+                        <!-- Paid Tickets -->
+                        <div
+                            class="ticket-border-glow bg-midnight/90 backdrop-blur-xl p-6 rounded-lg border border-white/10 text-center">
+                            <div class="text-xs font-black uppercase tracking-wide text-neon-cyan mb-2">Boletos Pagados
+                            </div>
+                            <div id="stats-paid-tickets"
+                                class="text-4xl font-black text-neon-cyan drop-shadow-[0_0_10px_rgba(0,255,255,0.5)]">0
+                            </div>
+                        </div>
+
+                        <!-- Free Tickets -->
+                        <div
+                            class="ticket-border-glow bg-midnight/90 backdrop-blur-xl p-6 rounded-lg border border-white/10 text-center">
+                            <div class="text-xs font-black uppercase tracking-wide text-neon-yellow mb-2">Boletos Gratis
+                            </div>
+                            <div id="stats-free-tickets"
+                                class="text-4xl font-black text-neon-yellow drop-shadow-[0_0_10px_rgba(255,255,0,0.5)]">
+                                0</div>
+                        </div>
+
+                        <!-- Total Revenue -->
+                        <div
+                            class="ticket-border-glow bg-midnight/90 backdrop-blur-xl p-6 rounded-lg border border-white/10 text-center">
+                            <div class="text-xs font-black uppercase tracking-wide text-neon-lime mb-2">Ingresos Totales
+                            </div>
+                            <div id="stats-total-revenue"
+                                class="text-4xl font-black text-neon-lime drop-shadow-[0_0_10px_rgba(204,255,0,0.5)]">$0
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Secondary Stats -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <!-- Scanned Tickets -->
+                        <div class="bg-white/10 p-6 border border-white/20 text-center">
+                            <div class="text-xs font-black uppercase tracking-wide text-white/70 mb-2">Boletos
+                                Escaneados</div>
+                            <div id="stats-scanned-tickets" class="text-3xl font-black text-white">0</div>
+                        </div>
+
+                        <!-- Pending Tickets -->
+                        <div class="bg-white/10 p-6 border border-white/20 text-center">
+                            <div class="text-xs font-black uppercase tracking-wide text-white/70 mb-2">Pendientes de
+                                Escanear</div>
+                            <div id="stats-pending-tickets" class="text-3xl font-black text-white">0</div>
+                        </div>
+
+                        <!-- Average Ticket Price -->
+                        <div class="bg-white/10 p-6 border border-white/20 text-center">
+                            <div class="text-xs font-black uppercase tracking-wide text-white/70 mb-2">Precio Promedio
+                            </div>
+                            <div id="stats-avg-price" class="text-3xl font-black text-white">$0</div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Sales -->
+                    <div
+                        class="ticket-border-glow bg-midnight/90 backdrop-blur-xl p-6 rounded-lg border border-white/10">
+                        <h3 class="text-xl font-black uppercase mb-4 text-white">Ventas Recientes</h3>
+                        <div id="recent-sales-list" class="space-y-2 max-h-96 overflow-y-auto">
+                            <!-- Recent sales will be loaded here -->
                         </div>
                     </div>
                 </div>
