@@ -120,7 +120,10 @@ class User {
             role: user.role
         };
 
-        return jwt.sign(payload, process.env.JWT_SECRET, {
+        // Fallback for Heroku debugging
+        const secret = process.env.JWT_SECRET || 'temporary_debug_secret_12345';
+
+        return jwt.sign(payload, secret, {
             expiresIn: process.env.JWT_EXPIRES_IN || '7d'
         });
     }
