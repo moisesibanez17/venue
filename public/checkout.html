@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago - Venue</title>
+    <link rel="icon" type="image/png" href="/img/logo.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="navbar-brand"><img src="/img/logo.png" alt="Venue" class="navbar-logo"> Venue</a>
+            <button class="navbar-toggle" id="navbarToggle" aria-label="Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+            <ul class="navbar-menu">
+                <li><a href="/">Eventos</a></li>
+                <li><a href="/profile.html">Mis Boletos</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Checkout Form -->
+    <div class="container mt-4 mb-4">
+
+        <div class="checkout-header fade-in-up">
+            <h2>Finalizar Compra</h2>
+            <div class="step-indicator">
+                <div class="step active"></div>
+                <div class="step"></div>
+            </div>
+            <p style="color: var(--gray);">Estás a un paso de conseguir tus boletos</p>
+        </div>
+
+        <div class="grid grid-3 gap-4">
+            <!-- Checkout Form -->
+            <div style="grid-column: span 2;">
+                <div class="glass-card fade-in-up">
+                    <form id="checkoutForm">
+                        <h3 class="mb-4" style="border-left: 4px solid var(--primary); padding-left: 1rem;">Tu
+                            Información</h3>
+
+                        <div class="grid grid-2 gap-3">
+                            <div class="form-group">
+                                <label class="form-label">Nombre Completo</label>
+                                <div class="input-with-icon">
+                                    <span class="input-with-icon-symbol">👤</span>
+                                    <input type="text" class="form-control" id="fullName" placeholder="Ej. Juan Pérez"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Correo Electrónico</label>
+                                <div class="input-with-icon">
+                                    <span class="input-with-icon-symbol">✉️</span>
+                                    <input type="email" class="form-control" id="email" placeholder="ejemplo@correo.com"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr style="border-color: var(--gray-lighter); margin: 2rem 0; opacity: 0.3;">
+
+                        <h3 class="mb-3" style="border-left: 4px solid var(--secondary); padding-left: 1rem;">Código
+                            Promocional</h3>
+                        <div class="flex-between gap-3">
+                            <div class="input-with-icon" style="flex-grow: 1;">
+                                <span class="input-with-icon-symbol">🏷️</span>
+                                <input type="text" class="form-control" id="promoCode" placeholder="Ingresa tu cupón">
+                            </div>
+                            <button type="button" class="btn btn-outline" onclick="applyPromoCode()">Aplicar</button>
+                        </div>
+                        <div id="promoMessage" class="mt-2"></div>
+
+                        <hr style="border-color: var(--gray-lighter); margin: 2rem 0; opacity: 0.3;">
+
+                        <h3 class="mb-2" style="border-left: 4px solid var(--accent); padding-left: 1rem;">Pago</h3>
+                        <p style="color: var(--gray); margin-bottom: 2rem; font-size: 0.9rem;">
+                            🔒 Pago seguro y encriptado. Serás redirigido a Stripe.
+                        </p>
+
+                        <button type="submit" class="btn btn-primary btn-lg"
+                            style="width: 100%; box-shadow: var(--primary-glow);" id="submitBtn">
+                            Proceder al Pago
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Order Summary Sidebar -->
+            <div>
+                <div class="summary-sticky fade-in-up" style="animation-delay: 0.2s;">
+                    <div class="summary-card">
+                        <h3 class="mb-3">Resumen de Orden</h3>
+                        <div id="orderSummary">
+                            <div class="text-center py-4">
+                                <span style="font-size: 2rem;">🧾</span>
+                                <p class="mt-2">Cargando detalles...</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-3" style="border-top: 1px dashed var(--gray);">
+                            <small class="text-muted">Al completar la compra, aceptas nuestros términos y
+                                condiciones.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/checkout.js"></script>
+</body>
+
+</html>

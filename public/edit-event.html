@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Evento | Venue Platform</title>
+    <link rel="icon" type="image/png" href="/img/logo.png">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="/" class="navbar-brand"><img src="/img/logo.png" alt="Venue" class="navbar-logo"> Venue</a>
+            <button class="navbar-toggle" id="navbarToggle" aria-label="Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+            <!-- Original: <div class="navbar-links" id="navbarLinks"> -->
+            <ul class="navbar-menu" id="navbarMenu">
+                <!-- Links will be injected by JS -->
+        </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5 mb-5">
+        <div class="card" style="max-width: 800px; margin: 0 auto;">
+            <div class="card-body p-4">
+                <h2 class="mb-4">Editar Evento</h2>
+
+                <form id="editEventForm">
+                    <input type="hidden" id="eventId">
+
+                    <!-- Basic Info -->
+                    <div class="form-group">
+                        <label for="title">Título del Evento</label>
+                        <input type="text" class="form-control" id="title" required placeholder="Ej. Concierto de Rock">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Descripción</label>
+                        <textarea class="form-control" id="description" rows="4" required
+                            placeholder="Detalles del evento..."></textarea>
+                    </div>
+
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label for="category">Categoría</label>
+                            <select class="form-control" id="category" required>
+                                <option value="">Seleccionar...</option>
+                                <option value="music">Música</option>
+                                <option value="sports">Deportes</option>
+                                <option value="arts">Arte y Teatro</option>
+                                <option value="business">Negocios</option>
+                                <option value="party">Fiestas</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Estado</label>
+                            <select class="form-control" id="status" required>
+                                <option value="draft">Borrador</option>
+                                <option value="published">Publicado</option>
+                                <option value="cancelled">Cancelado</option>
+                                <option value="completed">Finalizado</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Date & Time -->
+                    <h3 class="mt-4">Fecha y Hora</h3>
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label for="startDate">Inicio</label>
+                            <input type="datetime-local" class="form-control" id="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">Fin</label>
+                            <input type="datetime-local" class="form-control" id="endDate" required>
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <h3 class="mt-4">Ubicación y Capacidad</h3>
+                    <div class="form-group">
+                        <label for="location">Dirección / Lugar</label>
+                        <input type="text" class="form-control" id="location" required
+                            placeholder="Ej. Estadio Nacional">
+                    </div>
+
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label for="city">Ciudad</label>
+                            <input type="text" class="form-control" id="city" required
+                                placeholder="Ej. Ciudad de México">
+                        </div>
+                        <div class="form-group">
+                            <label for="capacity">Capacidad Total</label>
+                            <input type="number" class="form-control" id="capacity" required min="1"
+                                placeholder="Ej. 1000">
+                        </div>
+                    </div>
+
+                    <!-- Ticket Types -->
+                    <h3 class="mt-4">Tipos de Boletos</h3>
+                    <div class="card bg-gray-light mb-4">
+                        <div class="card-body">
+                            <div id="ticketTypesContainer">
+                                <!-- Ticket types will be added here -->
+                            </div>
+                            <button type="button" class="btn btn-outline w-100 mt-2" id="addTicketTypeBtn">
+                                + Agregar Tipo de Boleto
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Image -->
+                    <h3 class="mt-4">Imagen del Evento</h3>
+                    <div class="mb-3">
+                        <label class="small text-muted">Imagen Actual:</label>
+                        <div id="currentImageContainer" class="mb-2"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="imageFile">Cambiar Imagen (Opcional)</label>
+                        <input type="file" class="form-control" id="imageFile" accept="image/*">
+                        <small class="text-muted">Formatos aceptados: JPG, PNG, WEBP. Máx 5MB.</small>
+                    </div>
+
+                    <div class="flex-end gap-2 mt-4">
+                        <a href="/organizer-dashboard.html" class="btn btn-outline">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+    <script src="js/edit-event.js"></script>
+</body>
+
+</html>

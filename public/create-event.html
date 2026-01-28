@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Evento - Venue</title>
+    <link rel="icon" type="image/png" href="/img/logo.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="navbar-brand"><img src="/img/logo.png" alt="Venue" class="navbar-logo"> Venue</a>
+            <button class="navbar-toggle" id="navbarToggle" aria-label="Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="/">Eventos</a></li>
+                <li><a href="/organizer-dashboard.html">Panel</a></li>
+                <li><a href="#" id="logoutLink">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Create Event Form -->
+    <div class="container mt-4 mb-4">
+        <div class="card" style="max-width: 800px; margin: 0 auto;">
+            <div class="card-body">
+                <h1 class="mb-4">Crear Nuevo Evento</h1>
+
+                <form id="createEventForm">
+                    <!-- Basic Info -->
+                    <h3>Información Básica</h3>
+                    <div class="form-group">
+                        <label class="form-label">Título del Evento</label>
+                        <input type="text" class="form-control" id="title" required placeholder="Ej. Concierto de Rock">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Descripción</label>
+                        <textarea class="form-control" id="description" rows="4" required
+                            placeholder="Describe tu evento..."></textarea>
+                    </div>
+
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Categoría</label>
+                            <select class="form-control" id="category" required>
+                                <option value="music">Música</option>
+                                <option value="conference">Conferencia</option>
+                                <option value="sports">Deportes</option>
+                                <option value="arts">Arte y Cultura</option>
+                                <option value="party">Fiesta</option>
+                                <option value="other">Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Estado</label>
+                            <select class="form-control" id="status" required>
+                                <option value="published">Publicado</option>
+                                <option value="draft">Borrador</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Date & Location -->
+                    <h3 class="mt-4">Fecha y Ubicación</h3>
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Fecha de Inicio</label>
+                            <input type="datetime-local" class="form-control" id="startDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Fecha de Fin</label>
+                            <input type="datetime-local" class="form-control" id="endDate" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Ubicación</label>
+                        <input type="text" class="form-control" id="location" required
+                            placeholder="Dirección del evento">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Ciudad</label>
+                        <input type="text" class="form-control" id="city" required placeholder="Ciudad">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Capacidad Total</label>
+                        <input type="number" class="form-control" id="capacity" required min="1" placeholder="Ej. 1000">
+                    </div>
+
+                    <!-- Ticket Types -->
+                    <h3 class="mt-4">Tipos de Boletos</h3>
+                    <div class="card bg-gray-light mb-4">
+                        <div class="card-body">
+                            <div id="ticketTypesContainer">
+                                <!-- Ticket types will be added here -->
+                            </div>
+                            <button type="button" class="btn btn-outline w-100 mt-2" id="addTicketTypeBtn">
+                                + Agregar Tipo de Boleto
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Image -->
+                    <h3 class="mt-4">Imagen del Evento</h3>
+                    <div class="form-group">
+                        <label class="form-label">Subir Imagen</label>
+                        <input type="file" class="form-control" id="imageFile" accept="image/*">
+                        <small style="color: var(--gray);">Formatos permitidos: JPG, PNG, WEBP (Max 5MB)</small>
+                    </div>
+
+                    <hr class="mt-4 mb-4">
+
+                    <div class="flex-center gap-2">
+                        <button type="submit" class="btn btn-primary" style="min-width: 200px;">Crear Evento</button>
+                        <a href="/organizer-dashboard.html" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/create-event.js"></script>
+</body>
+
+</html>

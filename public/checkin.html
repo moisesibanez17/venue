@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escanear Boletos - Venue</title>
+    <link rel="icon" type="image/png" href="/img/logo.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="/js/qr-scanner.umd.min.js"></script>
+    <style>
+        .scanner-wrapper {
+            position: relative;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            aspect-ratio: 1/1;
+            /* Keep it square-ish on mobile */
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .scanner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-sizing: border-box;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .scanner-guide {
+            width: 70%;
+            height: 70%;
+            max-width: 250px;
+            max-height: 250px;
+            border: 2px solid #fff;
+            border-radius: 12px;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .scanner-guide::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: rgba(255, 0, 0, 0.5);
+            animation: scan 2s infinite linear;
+        }
+
+        @keyframes scan {
+            0% {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+        }
+
+        .controls {
+            padding: 1rem;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .status-badge.active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .scan-result {
+            margin-top: 1rem;
+            display: none;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 600px) {
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .controls {
+                justify-content: center;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                /* Larger touch targets */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="navbar-brand"><img src="/img/logo.png" alt="Venue" class="navbar-logo"> Venue</a>
+            <button class="navbar-toggle" id="navbarToggle" aria-label="Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="/organizer-dashboard.html">Volver al Panel</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="container mt-4">
+        <h1 class="text-center mb-4">Control de Acceso</h1>
+
+        <div class="scanner-wrapper">
+            <!-- Added playsinline for iOS -->
+            <video id="qr-video" playsinline></video>
+            <div class="scanner-overlay">
+                <div class="scanner-guide"></div>
+            </div>
+
+            <div class="controls">
+                <div id="camStatus" class="status-badge">Cámara Inactiva</div>
+                <div class="flex-center gap-2">
+                    <button id="toggleFlashBtn" class="btn btn-outline btn-sm" style="display: none;">⚡</button>
+                    <button id="startBtn" class="btn btn-primary btn-sm">Iniciar Cámara</button>
+                    <button id="stopBtn" class="btn btn-outline btn-sm" style="display: none;">Detener</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="scanResult" class="scan-result"></div>
+
+        <div class="scanner-container mt-4 p-4">
+            <h3 class="mb-3">Ingreso Manual</h3>
+            <div class="flex-between gap-2">
+                <input type="text" id="manualTicketInput" class="form-control" placeholder="Número de Ticket">
+                <button id="manualSubmitBtn" class="btn btn-primary">Verificar</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Sound -->
+    <audio id="successAudio">
+        <source
+            src="data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//uQRAAAAWMSLwUIYAAsYkXgoQwAEaYLWfkWgAI0wWs/ItAA......"
+            type="audio/mpeg">
+    </audio>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/checkin.js"></script>
+</body>
+
+</html>

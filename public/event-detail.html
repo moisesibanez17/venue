@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Evento - Venue</title>
+    <link rel="icon" type="image/png" href="/img/logo.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="navbar-brand"><img src="/img/logo.png" alt="Venue" class="navbar-logo"> Venue</a>
+            <button class="navbar-toggle" id="navbarToggle" aria-label="Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="/">Eventos</a></li>
+                <li><a href="#" id="myTicketsLink" style="display: none;">Mis Boletos</a></li>
+                <li><a href="#" id="dashboardLink" style="display: none;">Panel</a></li>
+                <li><a href="/login.html" id="loginLink">Iniciar Sesión</a></li>
+                <li><a href="/register.html" id="registerLink">Registrarse</a></li>
+                <li><a href="#" id="logoutLink" style="display: none;">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Event Header -->
+    <!-- Cinema Hero Section -->
+    <section class="cinema-hero-section fade-in-up">
+        <div id="eventBannerBg" class="cinema-backdrop">
+            <div class="cinema-backdrop-image" id="eventBackdropImage"></div>
+        </div>
+
+        <div class="container" style="max-width: 1200px;">
+            <div class="cinema-grid">
+                <!-- Left: The Poster -->
+                <div class="cinema-poster-frame">
+                    <img id="eventImage" src="" alt="Poster del Evento" class="cinema-poster-img">
+                    <span id="eventStatus" class="badge"
+                        style="position: absolute; top: 15px; right: 15px; z-index: 20; box-shadow: 0 4px 10px rgba(0,0,0,0.5);"></span>
+                </div>
+
+                <!-- Right: The Info -->
+                <div class="cinema-info">
+                    <div class="mb-2">
+                        <span id="eventCategory" class="cinema-meta-tag"></span>
+                        <span class="cinema-meta-tag">
+                            📅 <span id="eventDate"></span>
+                        </span>
+                        <span class="cinema-meta-tag">
+                            📍 <span id="eventLocation"></span>
+                        </span>
+                    </div>
+
+                    <h1 id="eventTitle">Cargando...</h1>
+
+                    <div class="cinema-stats-row">
+                        <div class="cinema-stat-item">
+                            <p class="text-xs text-uppercase text-muted mb-1">Organizado por</p>
+                            <p id="eventOrganizer"></p>
+                        </div>
+                        <div class="cinema-stat-divider"></div>
+                        <div class="cinema-stat-item">
+                            <p class="text-xs text-uppercase text-muted mb-1">Capacidad</p>
+                            <p id="eventCapacity"></p>
+                        </div>
+                    </div>
+
+                    <h3 class="mb-2" style="color: #fff;">Sinopsis</h3>
+                    <p id="eventDescription" class="cinema-description"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tickets Section -->
+    <section class="container mb-5" id="tickets-section" style="max-width: 1000px;">
+        <div class="glass-card fade-in-up"
+            style="animation-delay: 0.2s; position: relative; z-index: 20; margin-top: -50px;">
+            <h2 class="section-title mb-4 flex-between">
+                Selecciona tus Boletos
+                <small class="text-muted" style="font-size: 1rem; font-weight: normal;">Pago 100% Seguro</small>
+            </h2>
+            <div id="ticketTypes">
+                <!-- Ticket types will be loaded here -->
+                <div class="text-center py-4">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/event-detail.js"></script>
+</body>
+
+</html>

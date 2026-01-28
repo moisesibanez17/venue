@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venue - Descubre Eventos Increíbles</title>
+    <link rel="icon" type="image/png" href="/img/logo.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="navbar-brand"><img src="/img/logo.png" alt="Venue" class="navbar-logo"> Venue</a>
+            <button class="navbar-toggle" id="navbarToggle" aria-label="Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="/">Eventos</a></li>
+                <li><a href="#" id="myTicketsLink" style="display: none;">Mis Boletos</a></li>
+                <li><a href="#" id="dashboardLink" style="display: none;">Panel</a></li>
+                <li><a href="/login.html" id="loginLink">Iniciar Sesión</a></li>
+                <li><a href="/register.html" id="registerLink">Registrarse</a></li>
+                <li><a href="#" id="logoutLink" style="display: none;">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="fade-in-up">Descubre Eventos Increíbles</h1>
+            <p class="fade-in-up" style="animation-delay: 0.1s; max-width: 600px; margin: 0 auto;">Encuentra y compra
+                boletos para conciertos, conferencias, talleres y experiencias inolvidables</p>
+            <div class="flex-center gap-3 fade-in-up" style="animation-delay: 0.2s; margin-top: 2rem;">
+                <a href="#events" class="btn btn-primary" style="padding: 1rem 2rem; font-size: 1.125rem;">Explorar
+                    Eventos</a>
+                <a href="/register.html" class="btn btn-outline"
+                    style="border-color: white; color: white; padding: 1rem 2rem; font-size: 1.125rem;">Ser
+                    Organizador</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search & Filter Section -->
+    <section class="container mt-4">
+        <div class="card" style="padding: var(--spacing-lg);">
+            <div class="grid grid-4">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">🔍 Buscar</label>
+                    <input type="text" class="form-control" id="searchInput" placeholder="Nombre del evento...">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">📂 Categoría</label>
+                    <select class="form-control" id="categoryFilter">
+                        <option value="">Todas las Categorías</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">📍 Ciudad</label>
+                    <input type="text" class="form-control" id="cityFilter" placeholder="Ingresa la ciudad...">
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label class="form-label">🔄 Ordenar Por</label>
+                    <select class="form-control" id="sortBy">
+                        <option value="event_date_start">Fecha (Próximos)</option>
+                        <option value="created_at">Más Nuevos</option>
+                        <option value="title">Nombre (A-Z)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Events -->
+    <section class="container mt-4" id="featuredSection">
+        <div class="flex-between mb-3">
+            <h2>⭐ Eventos Destacados</h2>
+        </div>
+        <div class="grid grid-3" id="featuredEvents">
+            <!-- Featured events will be loaded here -->
+        </div>
+    </section>
+
+    <!-- All Events -->
+    <section class="container mt-4 mb-4" id="events">
+        <div class="flex-between mb-3">
+            <h2>🎭 Próximos Eventos</h2>
+            <div id="resultsCount" style="color: var(--gray); font-size: 1rem;"></div>
+        </div>
+        <div class="grid grid-3" id="eventsGrid">
+            <!-- Events will be loaded here -->
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex-center mt-4" id="pagination">
+            <!-- Pagination will be loaded here -->
+        </div>
+    </section>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/events.js"></script>
+</body>
+
+</html>

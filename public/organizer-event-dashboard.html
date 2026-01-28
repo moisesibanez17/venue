@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel del Evento - Venue</title>
+    <link rel="icon" type="image/png" href="/img/logo.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="navbar-brand"><img src="/img/logo.png" alt="Venue" class="navbar-logo"> Venue</a>
+            <button class="navbar-toggle" id="navbarToggle" aria-label="Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="/organizer-dashboard.html">Volver al Panel General</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Event Header -->
+    <section class="container mt-4">
+        <div class="flex-between">
+            <div>
+                <span class="badge badge-info mb-2" id="eventStatusBadge">Cargando...</span>
+                <h1 id="eventTitle">Cargando evento...</h1>
+                <p id="eventDate" style="color: var(--gray);">...</p>
+            </div>
+            <div class="flex-center gap-2">
+                <a href="#" id="viewEventBtn" target="_blank" class="btn btn-outline">Ver Página Pública</a>
+                <a href="#" id="editEventBtn" class="btn btn-outline">Editar</a>
+                <a href="#" id="scanTicketsBtn" class="btn btn-primary">📷 Escanear</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Cards -->
+    <section class="container mt-3">
+        <div class="grid grid-3">
+            <!-- Revenue -->
+            <div class="card">
+                <div class="card-body">
+                    <p class="text-sm" style="color: var(--gray);">Ingresos Totales</p>
+                    <h2 id="eventRevenue" style="color: var(--warning); margin: 0.5rem 0;">$0</h2>
+                </div>
+            </div>
+
+            <!-- Tickets Sold -->
+            <div class="card">
+                <div class="card-body">
+                    <p class="text-sm" style="color: var(--gray);">Boletos Vendidos</p>
+                    <h2 id="eventTicketsSold" style="color: var(--success); margin: 0.5rem 0;">0</h2>
+                </div>
+            </div>
+
+            <!-- Check-in Rate -->
+            <div class="card">
+                <div class="card-body">
+                    <p class="text-sm" style="color: var(--gray);">Asistencia (Check-in)</p>
+                    <h2 id="eventCheckInRate" style="color: var(--info); margin: 0.5rem 0;">0%</h2>
+                    <p class="text-sm" id="eventCheckInCount" style="color: var(--gray);">0 de 0</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Grid -->
+    <section class="container mt-4 mb-5">
+        <div class="grid grid-2">
+            <!-- Attendees List -->
+            <div class="card" style="grid-column: span 2;">
+                <div class="card-body">
+                    <div class="flex-between mb-3">
+                        <h3>Asistentes</h3>
+                        <div class="flex-center gap-2">
+                            <button id="exportExcelBtn" class="btn btn-outline text-sm">📥 Asistentes</button>
+                            <button id="exportSalesBtn" class="btn btn-outline text-sm">💰 Ventas</button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="text" id="searchAttendee" class="form-control"
+                            placeholder="Buscar por nombre o email...">
+                    </div>
+
+                    <div id="attendeesTable">
+                        <p class="text-center p-4">Cargando asistentes...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/event-dashboard.js"></script>
+</body>
+
+</html>

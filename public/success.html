@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Pago Exitoso! - Venue</title>
+    <link rel="icon" type="image/png" href="/img/logo.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .success-container {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .success-card {
+            background: white;
+            padding: 3rem;
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-xl);
+            max-width: 800px;
+            width: 100%;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .ticket-item {
+            border: 1px solid var(--gray-light);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: var(--radius-md);
+            background: var(--gray-light);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: var(--success);
+            color: white;
+        }
+
+        /* Responsive Ticket Layout */
+        .ticket-grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .qr-container {
+            text-align: center;
+        }
+
+        .qr-image {
+            width: 200px;
+            height: 200px;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--radius-md);
+            padding: 0.5rem;
+            background: white;
+        }
+
+        @media (max-width: 768px) {
+            .ticket-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                text-align: center;
+                /* Center everything */
+                width: 100%;
+                overflow: hidden;
+                /* Prevent grid blowout */
+            }
+
+            .ticket-grid p {
+                word-break: break-all;
+                /* Crucial for long ticket strings */
+                overflow-wrap: break-word;
+                /* Fallback */
+                max-width: 100%;
+                padding: 0 5px;
+                /* Tiny padding */
+            }
+
+            .ticket-grid h4 {
+                margin-bottom: 1rem;
+            }
+
+            .qr-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                order: -1;
+                margin-bottom: 1rem;
+            }
+
+            /* Global center for success card on mobile */
+            .success-card .card-body,
+            .success-card .alert,
+            .success-card p {
+                text-align: center;
+            }
+
+            .success-card {
+                padding: 1rem;
+                /* minimal padding */
+                width: 100%;
+                /* Ensure it fits container */
+                margin: 0;
+            }
+
+            .success-container {
+                padding: 0.5rem;
+                /* minimal outer padding */
+            }
+
+            .qr-image {
+                max-width: 100%;
+                /* Fluid QR */
+                height: auto;
+                width: 180px;
+                /* Slightly smaller base width */
+            }
+
+            /* Scale down fonts */
+            .success-card h2 {
+                font-size: 1.5rem;
+            }
+
+            .success-card h3 {
+                font-size: 1.25rem;
+            }
+
+            .success-card h4 {
+                font-size: 1.1rem;
+            }
+
+            .success-card p {
+                font-size: 0.9rem;
+            }
+
+            .w-full-mobile {
+                width: 100%;
+                display: block;
+            }
+
+            /* Wrap long texts */
+            p {
+                word-break: break-all;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="navbar-brand"><img src="/img/logo.png" alt="Venue" class="navbar-logo"> Venue</a>
+            <button class="navbar-toggle" id="navbarToggle" aria-label="Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="/">Eventos</a></li>
+                <li><a href="#" id="myTicketsLink" style="display: none;">Mis Boletos</a></li>
+                <li><a href="#" id="dashboardLink" style="display: none;">Panel</a></li>
+                <li><a href="/login.html" id="loginLink">Iniciar Sesión</a></li>
+                <li><a href="/register.html" id="registerLink">Registrarse</a></li>
+                <li><a href="#" id="logoutLink" style="display: none;">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Success Content -->
+    <div class="success-container">
+        <div class="success-card">
+            <div id="successMessage">
+                <div class="success-icon">⏳</div>
+                <h1 class="mb-3">Verificando Pago...</h1>
+                <p class="mb-4" style="color: var(--gray); font-size: 1.125rem;">
+                    Por favor espera mientras verificamos tu pago.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/success.js"></script>
+</body>
+
+</html>

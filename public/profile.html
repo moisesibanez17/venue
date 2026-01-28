@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Venue</title>
+    <link rel="icon" type="image/png" href="/img/logo.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="navbar-brand"><img src="/img/logo.png" alt="Venue" class="navbar-logo"> Venue</a>
+            <button class="navbar-toggle" id="navbarToggle" aria-label="Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+            <ul class="navbar-menu" id="navbarMenu">
+                <li><a href="/">Eventos</a></li>
+                <li><a href="/profile.html">Mis Boletos</a></li>
+                <li><a href="#" id="dashboardLink" style="display: none;">Panel</a></li>
+                <li><a href="#" id="logoutLink">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Profile Header -->
+    <section class="container mt-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="flex-between">
+                    <div>
+                        <h2 id="userName">Mi Perfil</h2>
+                        <p id="userEmail" style="color: var(--gray);"></p>
+                    </div>
+                    <button class="btn btn-outline" onclick="toggleEditMode()">Editar Perfil</button>
+                </div>
+
+                <!-- Edit Form (Hidden by default) -->
+                <form id="editProfileForm" style="display: none; margin-top: 2rem;">
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" id="editFullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="editPhone">
+                        </div>
+                    </div>
+                    <div class="flex-center gap-2">
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabs -->
+    <section class="container mt-4">
+        <div class="flex-center gap-2">
+            <button class="btn btn-primary" id="ticketsTab" onclick="showTab('tickets')">Mis Boletos</button>
+            <button class="btn btn-outline" id="historyTab" onclick="showTab('history')">Historial de Compras</button>
+        </div>
+    </section>
+
+    <!-- Tickets Section -->
+    <section class="container mt-4 mb-4" id="ticketsSection">
+        <h3>Mis Boletos</h3>
+        <div class="grid grid-2" id="ticketsGrid">
+            <!-- Tickets will be loaded here -->
+        </div>
+    </section>
+
+    <!-- Purchase History Section -->
+    <section class="container mt-4 mb-4" id="historySection" style="display: none;">
+        <h3>Historial de Compras</h3>
+        <div id="purchaseHistory">
+            <!-- Purchase history will be loaded here -->
+        </div>
+    </section>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/profile.js"></script>
+</body>
+
+</html>
