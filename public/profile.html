@@ -68,6 +68,7 @@
         <div class="flex-center gap-2">
             <button class="btn btn-primary" id="ticketsTab" onclick="showTab('tickets')">Mis Boletos</button>
             <button class="btn btn-outline" id="historyTab" onclick="showTab('history')">Historial de Compras</button>
+            <button class="btn btn-outline" id="securityTab" onclick="showTab('security')">Seguridad</button>
         </div>
     </section>
 
@@ -84,6 +85,41 @@
         <h3>Historial de Compras</h3>
         <div id="purchaseHistory">
             <!-- Purchase history will be loaded here -->
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section class="container mt-4 mb-4" id="securitySection" style="display: none;">
+        <h3>Seguridad de la Cuenta</h3>
+        <div class="card mt-3">
+            <div class="card-body">
+                <h4>Cambiar Contraseña</h4>
+                <p style="color: var(--gray); font-size: 0.9rem;">Te recomendamos usar una contraseña fuerte que no uses
+                    en otros sitios.</p>
+
+                <form id="changePasswordForm" class="mt-4">
+                    <div class="form-group">
+                        <label class="form-label">Contraseña Actual</label>
+                        <input type="password" class="form-control" id="currentPassword" required
+                            placeholder="••••••••">
+                    </div>
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Nueva Contraseña</label>
+                            <input type="password" class="form-control" id="newPassword" required
+                                placeholder="Mínimo 6 caracteres">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Confirmar Nueva Contraseña</label>
+                            <input type="password" class="form-control" id="confirmNewPassword" required
+                                placeholder="Repite la contraseña">
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-primary">Actualizar Contraseña</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </section>
 

@@ -154,23 +154,67 @@ function renderPurchaseHistory(purchases) {
 function showTab(tab) {
     const ticketsSection = document.getElementById('ticketsSection');
     const historySection = document.getElementById('historySection');
+    const securitySection = document.getElementById('securitySection');
     const ticketsTab = document.getElementById('ticketsTab');
     const historyTab = document.getElementById('historyTab');
+    const securityTab = document.getElementById('securityTab');
+
+    // Hide all
+    ticketsSection.style.display = 'none';
+    historySection.style.display = 'none';
+    securitySection.style.display = 'none';
+    ticketsTab.className = 'btn btn-outline';
+    historyTab.className = 'btn btn-outline';
+    securityTab.className = 'btn btn-outline';
 
     if (tab === 'tickets') {
         ticketsSection.style.display = 'block';
-        historySection.style.display = 'none';
         ticketsTab.className = 'btn btn-primary';
-        historyTab.className = 'btn btn-outline';
         loadTickets();
-    } else {
-        ticketsSection.style.display = 'none';
+    } else if (tab === 'history') {
         historySection.style.display = 'block';
-        ticketsTab.className = 'btn btn-outline';
         historyTab.className = 'btn btn-primary';
         loadPurchaseHistory();
+    } else if (tab === 'security') {
+        securitySection.style.display = 'block';
+        securityTab.className = 'btn btn-primary';
     }
 }
+
+// Change Password
+document.getElementById('changePasswordForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const currentPassword = document.getElementById('currentPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+
+    if (newPassword !== confirmNewPassword) {
+        ui.showAlert('Las nuevas contraseñas no coinciden', 'error');
+        return;
+    }
+
+    if (newPassword.length < 6) {
+        ui.showAlert('La nueva contraseña debe tener al menos 6 caracteres', 'error');
+        return;
+    }
+
+    try {
+        ui.showLoading();
+        await apiCall('/auth/change-password', {
+            method: 'POST',
+            body: JSON.stringify({ currentPassword, newPassword })
+        });
+
+        ui.showAlert('Contraseña actualizada exitosamente', 'success');
+        e.target.reset();
+        showTab('tickets');
+    } catch (error) {
+        ui.showAlert(error.message || 'Error al cambiar contraseña', 'error');
+    } finally {
+        ui.hideLoading();
+    }
+});
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
