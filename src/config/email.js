@@ -1,12 +1,27 @@
-const { Resend } = require('resend');
+const nodemailer = require('nodemailer');
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-// Verify API key is configured
-if (!process.env.RESEND_API_KEY) {
-    console.warn('⚠️  RESEND_API_KEY not configured');
-} else {
-    console.log('✅ Resend email service configured');
+// Verify configuration
+if (!process.env.GMAIL_USER || !process.env.GMAIL_PASS) {
+    console.warn('⚠️  Gmail SMTP credentials not configured (GMAIL_USER, GMAIL_PASS)');
 }
 
-module.exports = resend;
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS
+    }
+});
+
+// Verify connection
+if (process.env.GMAIL_USER && process.env.GMAIL_PASS) {
+    transporter.verify(function (error, success) {
+        if (error) {
+            console.error('❌ Gmail SMTP connection error:', error);
+        } else {
+            console.log('✅ Gmail SMTP service ready');
+        }
+    });
+}
+
+module.exports = transporter;

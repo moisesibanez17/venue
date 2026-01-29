@@ -7,23 +7,30 @@ class EmailService {
      */
     static async send({ to, subject, html, attachments = [] }) {
         try {
-            const data = await transporter.emails.send({
-                from: `${process.env.EMAIL_FROM_NAME || 'Event Platform'} <${process.env.EMAIL_FROM || 'onboarding@resend.dev'}>`,
-                to: Array.isArray(to) ? to : [to],
+            console.log(`[EmailService] Attempting to send email via Gmail to: ${to}`);
+
+            const mailOptions = {
+                from: `"${process.env.EMAIL_FROM_NAME || 'Event Platform'}" <${process.env.GMAIL_USER}>`,
+                to: Array.isArray(to) ? to.join(', ') : to,
                 subject,
                 html,
                 attachments: attachments.map(att => ({
                     filename: att.filename,
-                    content: att.content
+                    content: att.content,
+                    path: att.path // Support both content and path
                 }))
-            });
+            };
 
-            console.log('Email sent:', data.id);
-            return data;
+            const info = await transporter.sendMail(mailOptions);
+
+            console.log('✅ Email sent successfully via Gmail. ID:', info.messageId);
+            return info;
         } catch (error) {
-            console.error('Email send error:', error);
-            // Don't throw error to allow execution to continue (e.g. at success page)
-            // throw error; 
+            console.error('❌ Email Service Exception (Gmail SMTP):', {
+                message: error.message,
+                stack: error.stack,
+                details: error
+            });
             return null;
         }
     }

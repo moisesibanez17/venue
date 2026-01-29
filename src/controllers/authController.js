@@ -127,6 +127,12 @@ class AuthController {
             await User.setResetToken(user.id, resetToken);
 
             // Send reset email
+            console.log('--- DEBUG: PASSWORD RESET ---');
+            console.log(`User: ${user.email}`);
+            console.log(`Reset Token: ${resetToken}`);
+            console.log(`Reset URL: ${process.env.FRONTEND_URL}/reset-password.html?token=${resetToken}`);
+            console.log('-----------------------------');
+
             await EmailService.sendPasswordReset(user, resetToken);
 
             res.json({
