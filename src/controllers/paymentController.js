@@ -203,7 +203,7 @@ class PaymentController {
                 return res.status(404).json({ error: 'Session not found' });
             }
 
-            const purchaseId = session.metadata.purchaseId;
+            const purchaseId = session.metadata.purchase_id;
 
             // Find purchase
             let purchase = await Purchase.findById(purchaseId);
@@ -482,7 +482,7 @@ class PaymentController {
         // Handle the event
         if (event.type === 'checkout.session.completed') {
             const session = event.data.object;
-            const purchaseId = session.metadata.purchaseId;
+            const purchaseId = session.metadata.purchase_id;
 
             // Find purchase
             const purchase = await Purchase.findById(purchaseId);
