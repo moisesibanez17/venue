@@ -249,13 +249,13 @@ class Purchase {
     static async getEventRevenue(eventId) {
         const { data, error } = await supabaseAdmin
             .from('purchases')
-            .select('total, payment_status, created_at')
+            .select('subtotal, discount, total, payment_status, created_at')
             .eq('event_id', eventId)
             .eq('payment_status', 'completed');
 
         if (error) throw error;
 
-        const totalRevenue = data.reduce((sum, p) => sum + parseFloat(p.total), 0);
+        const totalRevenue = data.reduce((sum, p) => sum + (parseFloat(p.subtotal) - parseFloat(p.discount)), 0);
         const totalSales = data.length;
 
         return {

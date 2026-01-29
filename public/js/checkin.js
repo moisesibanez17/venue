@@ -20,29 +20,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const camStatus = document.getElementById('camStatus');
 
     // Initialize Scanner
-    QrScanner.WORKER_PATH = '/js/qr-scanner-worker.min.js';
-
-    qrScanner = new QrScanner(
-        videoElem,
-        result => onScanSuccess(result),
-        {
-            preferredCamera: 'environment', // Prefer back camera
-            highlightScanRegion: true,
-            highlightCodeOutline: true,
-        }
-    );
+    try {
+        qrScanner = new QrScanner(
+            videoElem,
+            result => onScanSuccess(result),
+            {
+                preferredCamera: 'environment',
+                highlightScanRegion: true,
+                highlightCodeOutline: true,
+                returnDetailedScanResult: true
+            }
+        );
+        console.log('Scanner initialized');
+    } catch (e) {
+        console.error('Failed to initialize scanner:', e);
+        camStatus.textContent = 'Error de inicialización';
+    }
 
     // Event Listeners
     startBtn.addEventListener('click', () => {
+        console.log('Attempting to start camera...');
         startScanner();
-        startBtn.style.display = 'none';
-        stopBtn.style.display = 'inline-block';
-        camStatus.textContent = 'Cámara Activa';
-        camStatus.classList.add('active');
     });
 
     stopBtn.addEventListener('click', () => {
-        qrScanner.stop();
+        if (qrScanner) qrScanner.stop();
         startBtn.style.display = 'inline-block';
         stopBtn.style.display = 'none';
         flashBtn.style.display = 'none';
@@ -51,9 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     flashBtn.addEventListener('click', () => {
-        qrScanner.toggleFlash().then(() => {
-            flashBtn.classList.toggle('active');
-        });
+        if (qrScanner) {
+            qrScanner.toggleFlash().then(() => {
+                flashBtn.classList.toggle('active');
+            }).catch(err => console.error('Flash error:', err));
+        }
     });
 
     document.getElementById('manualSubmitBtn').addEventListener('click', () => {
@@ -63,26 +67,49 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Handle initial camera check for flash support
+    // Handle initial camera check
     QrScanner.hasCamera().then(hasCamera => {
+        console.log('Has Camera:', hasCamera);
         if (!hasCamera) {
             camStatus.textContent = 'No se detectó cámara';
             startBtn.disabled = true;
         }
+    }).catch(err => {
+        console.error('Camera check error:', err);
     });
 });
 
 function startScanner() {
-    qrScanner.start().then(() => {
-        qrScanner.hasFlash().then(hasFlash => {
-            if (hasFlash) {
-                document.getElementById('toggleFlashBtn').style.display = 'inline-block';
+    if (!qrScanner) return;
+
+    qrScanner.start()
+        .then(() => {
+            console.log('Camera started successfully');
+            const startBtn = document.getElementById('startBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const camStatus = document.getElementById('camStatus');
+
+            startBtn.style.display = 'none';
+            stopBtn.style.display = 'inline-block';
+            camStatus.textContent = 'Cámara Activa';
+            camStatus.classList.add('active');
+
+            qrScanner.hasFlash().then(hasFlash => {
+                if (hasFlash) {
+                    document.getElementById('toggleFlashBtn').style.display = 'inline-block';
+                }
+            });
+        })
+        .catch(err => {
+            console.error('Camera Start Error:', err);
+            let msg = 'No se pudo iniciar la cámara.';
+            if (err.includes('Permission') || err.includes('NotAllowedError')) {
+                msg = 'Permiso denegado. Por favor, activa la cámara en tu navegador.';
+            } else if (err.includes('NotFound') || err.includes('DevicesNotFoundError')) {
+                msg = 'No se encontró ninguna cámara.';
             }
+            alert(msg);
         });
-    }).catch(err => {
-        console.error(err);
-        alert('No se pudo iniciar la cámara. Asegúrate de dar permisos.');
-    });
 }
 
 function onScanSuccess(result) {

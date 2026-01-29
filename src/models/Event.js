@@ -180,7 +180,7 @@ class Event {
         // Calculate Revenue and Tickets Sold from COMPLETED purchases only
         const { data: purchases, error: purchaseError } = await supabaseAdmin
             .from('purchases')
-            .select('amount:total, quantity')
+            .select('subtotal, discount, quantity')
             .eq('event_id', eventId)
             .eq('payment_status', 'completed');
 
@@ -190,7 +190,7 @@ class Event {
         let totalTicketsSold = 0;
 
         purchases.forEach(p => {
-            totalRevenue += parseFloat(p.amount || 0);
+            totalRevenue += (parseFloat(p.subtotal || 0) - parseFloat(p.discount || 0));
             totalTicketsSold += parseInt(p.quantity || 0);
         });
 
