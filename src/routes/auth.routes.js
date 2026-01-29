@@ -11,7 +11,7 @@ const registerValidation = [
     body('password').isLength({ min: 6 }),
     body('full_name').trim().notEmpty(),
     body('phone').optional().trim(),
-    body('role').optional().isIn(['user', 'organizer']),
+    body('role').optional().isIn(['user', 'organizer', 'attendee']),
     validateRequest
 ];
 

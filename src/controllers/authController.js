@@ -16,13 +16,16 @@ class AuthController {
                 return res.status(400).json({ error: 'Email already registered' });
             }
 
+            // Map 'attendee' to 'user' for database compatibility
+            const dbRole = role === 'attendee' ? 'user' : (role || 'user');
+
             // Create user
             const user = await User.create({
                 email,
                 password,
                 full_name,
                 phone,
-                role: role || 'user'
+                role: dbRole
             });
 
             // Generate verification token (optional)
