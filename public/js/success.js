@@ -69,7 +69,7 @@ async function verifyAndCompletePurchase() {
                                             <p style="margin: 0.25rem 0;"><strong>Tipo:</strong> ${ticket.ticket_type?.name || 'N/A'}</p>
                                             <p style="margin: 0.25rem 0;"><strong>Estado:</strong> <span class="badge badge-success">${ticket.status}</span></p>
                                             <div class="mt-3">
-                                                <a href="/api/payments/download-ticket/${ticket.id}" class="btn btn-primary w-full-mobile" download>
+                                                <a href="/api/payments/download-ticket/${ticket.id}?token=${auth.getToken()}" class="btn btn-primary w-full-mobile" download>
                                                     📥 Descargar Boleto PDF
                                                 </a>
                                             </div>

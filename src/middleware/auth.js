@@ -40,7 +40,7 @@ const authorizeRole = (...allowedRoles) => {
 
 const optionalAuth = (req, res, next) => {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+    const token = (authHeader && authHeader.split(' ')[1]) || req.query.token;
 
     if (!token) {
         req.user = null;

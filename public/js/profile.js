@@ -101,7 +101,7 @@ function renderTickets(tickets) {
                 ` : ''}
             </div>
             <div class="card-footer">
-                <a href="/api/payments/download-ticket/${ticket.id}" class="btn btn-primary" style="width: 100%;">Descargar PDF</a>
+                <a href="/api/payments/download-ticket/${ticket.id}?token=${auth.getToken()}" class="btn btn-primary" style="width: 100%;">Descargar PDF</a>
             </div>
         </div>
     `).join('');
