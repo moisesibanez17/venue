@@ -68,6 +68,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Handle initial camera check
+    if (!window.isSecureContext) {
+        console.warn('NOT in a secure context! Camera might not work.');
+        camStatus.textContent = 'Requiere HTTPS';
+        camStatus.style.background = '#fee2e2';
+        camStatus.style.color = '#991b1b';
+    }
+
     QrScanner.hasCamera().then(hasCamera => {
         console.log('Has Camera:', hasCamera);
         if (!hasCamera) {
@@ -80,8 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function startScanner() {
-    if (!qrScanner) return;
+    if (!qrScanner) {
+        console.error('Scanner not initialized');
+        return;
+    }
 
+    console.log('Attempting to start cam...');
     qrScanner.start()
         .then(() => {
             console.log('Camera started successfully');
@@ -101,14 +112,21 @@ function startScanner() {
             });
         })
         .catch(err => {
-            console.error('Camera Start Error:', err);
+            console.error('Camera Start Error (Detailed):', err);
             let msg = 'No se pudo iniciar la cámara.';
-            if (err.includes('Permission') || err.includes('NotAllowedError')) {
-                msg = 'Permiso denegado. Por favor, activa la cámara en tu navegador.';
-            } else if (err.includes('NotFound') || err.includes('DevicesNotFoundError')) {
-                msg = 'No se encontró ninguna cámara.';
+
+            const errStr = String(err);
+            if (errStr.includes('Permission') || errStr.includes('NotAllowedError')) {
+                msg = 'Permiso denegado. Por favor, activa la cámara en la configuración de tu navegador para este sitio.';
+            } else if (errStr.includes('NotFound') || errStr.includes('DevicesNotFoundError')) {
+                msg = 'No se encontró ninguna cámara física en este dispositivo.';
+            } else if (!window.isSecureContext) {
+                msg = 'El acceso a la cámara requiere una conexión segura (HTTPS). Por favor, contacta al administrador.';
             }
+
             alert(msg);
+            const camStatus = document.getElementById('camStatus');
+            camStatus.textContent = 'Error de Acceso';
         });
 }
 
